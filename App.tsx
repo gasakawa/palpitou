@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Button } from './components/ui/Button';
 import { AccordionItem } from './components/ui/Accordion';
 import { SignIn1 } from './components/ui/modern-stunning-sign-in';
@@ -12,10 +13,10 @@ import {
   ArrowRight
 } from 'lucide-react';
 
-export default function App() {
+const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
-  const [currentView, setCurrentView] = useState<'landing' | 'signin'>('landing');
+  const navigate = useNavigate();
 
   const toggleAccordion = (index: number) => {
     setOpenAccordion(openAccordion === index ? null : index);
@@ -30,13 +31,9 @@ export default function App() {
   };
 
   const handleSignInNavigation = () => {
-    setCurrentView('signin');
+    navigate('/signin');
     setIsMenuOpen(false);
   };
-
-  if (currentView === 'signin') {
-    return <SignIn1 onBack={() => setCurrentView('landing')} />;
-  }
 
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-emerald-100">
@@ -142,7 +139,6 @@ export default function App() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {/* Step 1 */}
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center group hover:shadow-md transition-shadow duration-300">
                 <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Trophy className="h-7 w-7" />
@@ -153,7 +149,6 @@ export default function App() {
                 </p>
               </div>
 
-              {/* Step 2 */}
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center group hover:shadow-md transition-shadow duration-300">
                 <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Users className="h-7 w-7" />
@@ -164,7 +159,6 @@ export default function App() {
                 </p>
               </div>
 
-              {/* Step 3 */}
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center group hover:shadow-md transition-shadow duration-300">
                 <div className="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Gamepad2 className="h-7 w-7" />
@@ -182,7 +176,6 @@ export default function App() {
         <section id="cta-final" className="py-24">
           <div className="container mx-auto px-4">
             <div className="bg-emerald-600 rounded-3xl p-8 md:p-16 text-center md:text-left relative overflow-hidden text-white shadow-2xl shadow-emerald-900/20">
-              {/* Decorative circles */}
               <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-emerald-500 opacity-50"></div>
               <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-emerald-700 opacity-50"></div>
               
@@ -272,5 +265,16 @@ export default function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function App() {
+  const navigate = useNavigate();
+
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/signin" element={<SignIn1 onBack={() => navigate('/')} />} />
+    </Routes>
   );
 }

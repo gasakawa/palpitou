@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Trophy, ArrowLeft, Mail, Lock } from "lucide-react";
 
 interface SignInProps {
@@ -6,6 +7,7 @@ interface SignInProps {
 }
 
 export const SignIn1: React.FC<SignInProps> = ({ onBack }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
@@ -26,19 +28,25 @@ export const SignIn1: React.FC<SignInProps> = ({ onBack }) => {
     setError("");
     alert("Login realizado com sucesso! (Demo)");
   };
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      navigate(-1);
+    }
+  };
  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#121212] relative overflow-hidden w-full font-sans">
       {/* Back Button */}
-      {onBack && (
-        <button 
-          onClick={onBack} 
-          className="absolute top-6 left-6 z-50 flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span className="text-sm font-medium">Voltar para home</span>
-        </button>
-      )}
+      <button 
+        onClick={handleBack} 
+        className="absolute top-6 left-6 z-50 flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors"
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span className="text-sm font-medium">Voltar para home</span>
+      </button>
 
       {/* Background Ambience */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/20 rounded-full blur-[120px] pointer-events-none" />
