@@ -11,7 +11,7 @@
   "dependencies": {
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-router-dom": "6.28.0",
+    "react-router-dom": "6.26.1",
     "lucide-react": "0.460.0"
   },
   "devDependencies": {
