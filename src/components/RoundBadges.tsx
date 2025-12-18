@@ -20,7 +20,7 @@ export const RoundBadges: React.FC<RoundBadgesProps> = ({ rounds, selectedRound,
           }`}
           aria-pressed={selectedRound === round}
           role="tab">
-          Rodada {round}
+          {round}
         </button>
       ))}
     </div>

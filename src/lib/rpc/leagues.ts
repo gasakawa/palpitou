@@ -86,3 +86,17 @@ export const selectDefaultRound = (matches: Match[], rounds: string[]): string =
 
   return rounds[rounds.length - 1] || '';
 };
+
+export const fetchLeagueDetails = async (leagueId: string): Promise<LeagueDetails> => {
+  try {
+    const { data, error } = await supabase.rpc('get_league_details_rpc', {
+      p_league_id: leagueId,
+    });
+
+    if (error) throw error;
+    return data as LeagueDetails;
+  } catch (err) {
+    console.error('Error fetching league details:', err);
+    throw err;
+  }
+};
