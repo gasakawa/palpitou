@@ -122,7 +122,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
               disabled={loading || isMatchStarted}
               min="0"
               max="99"
-              className="w-full px-2 py-1 rounded bg-white/5 border border-white/10 text-white text-center text-sm focus:outline-none focus:border-emerald-500/50 disabled:opacity-50"
+              className={`w-full px-2 py-1 rounded bg-white/5 border text-white text-center text-sm focus:outline-none ${
+                isMatchStarted
+                  ? 'border-slate-600 text-slate-400 cursor-not-allowed'
+                  : 'border-white/10 focus:border-emerald-500/50 disabled:opacity-50'
+              }`}
               placeholder="0"
             />
           </div>
@@ -135,7 +139,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
               disabled={loading || isMatchStarted}
               min="0"
               max="99"
-              className="w-full px-2 py-1 rounded bg-white/5 border border-white/10 text-white text-center text-sm focus:outline-none focus:border-emerald-500/50 disabled:opacity-50"
+              className={`w-full px-2 py-1 rounded bg-white/5 border text-white text-center text-sm focus:outline-none ${
+                isMatchStarted
+                  ? 'border-slate-600 text-slate-400 cursor-not-allowed'
+                  : 'border-white/10 focus:border-emerald-500/50 disabled:opacity-50'
+              }`}
               placeholder="0"
             />
           </div>
