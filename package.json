@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.88.0",
+    "framer-motion": "^12.23.26",
     "lucide-react": "0.460.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-router-dom": "6.26.1"
+    "react-router-dom": "6.26.1",
+    "shadcn": "^3.6.2"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
