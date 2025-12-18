@@ -112,36 +112,32 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
         </div>
 
         {/* Predictions Inputs */}
-        {!isMatchStarted ? (
-          <div className="grid grid-cols-2 gap-2 mb-2">
-            <div>
-              <label className="text-xs text-slate-400 block mb-1">{match.home_team}</label>
-              <input
-                type="number"
-                value={homePred}
-                onChange={(e) => setHomePred(e.target.value)}
-                disabled={loading}
-                min="0"
-                max="99"
-                className="w-full px-2 py-1 rounded bg-white/5 border border-white/10 text-white text-center text-sm focus:outline-none focus:border-emerald-500/50 disabled:opacity-50"
-                placeholder="0"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-slate-400 block mb-1">{match.away_team}</label>
-              <input
-                type="number"
-                value={awayPred}
-                onChange={(e) => setAwayPred(e.target.value)}
-                disabled={loading}
-                min="0"
-                max="99"
-                className="w-full px-2 py-1 rounded bg-white/5 border border-white/10 text-white text-center text-sm focus:outline-none focus:border-emerald-500/50 disabled:opacity-50"
-                placeholder="0"
-              />
-            </div>
+        <div className="grid grid-cols-2 gap-2 mb-2">
+          <div>
+            <input
+              type="number"
+              value={homePred}
+              onChange={(e) => setHomePred(e.target.value)}
+              disabled={loading || isMatchStarted}
+              min="0"
+              max="99"
+              className="w-full px-2 py-1 rounded bg-white/5 border border-white/10 text-white text-center text-sm focus:outline-none focus:border-emerald-500/50 disabled:opacity-50"
+              placeholder="0"
+            />
           </div>
-        ) : null}
+          <div>
+            <input
+              type="number"
+              value={awayPred}
+              onChange={(e) => setAwayPred(e.target.value)}
+              disabled={loading || isMatchStarted}
+              min="0"
+              max="99"
+              className="w-full px-2 py-1 rounded bg-white/5 border border-white/10 text-white text-center text-sm focus:outline-none focus:border-emerald-500/50 disabled:opacity-50"
+              placeholder="0"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Match Time and Countdown */}
@@ -156,42 +152,43 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
         </div>
       )}
 
-      {/* Match Status or Saved Prediction or Form */}
-      {isMatchStarted ? (
-        <div className="bg-white/5 rounded-lg p-2 text-center text-xs">
-          {hasRealScore ? (
-            <div className="text-white mb-1">
-              <div className="text-sm font-bold">
-                {match.home_score} <span className="text-slate-400">-</span> {match.away_score}
-              </div>
-              <div className="text-xs text-slate-400">Placar final</div>
+      {/* Match Result */}
+      {isMatchStarted && hasRealScore && (
+        <div className="bg-white/5 rounded-lg p-2 text-center text-xs mb-3">
+          <div className="text-white">
+            <div className="text-sm font-bold">
+              {match.home_score} <span className="text-slate-400">-</span> {match.away_score}
             </div>
-          ) : null}
-          {match.my_home_pred !== null && match.my_away_pred !== null && (
-            <div className="text-slate-400">
-              Palpite:{' '}
-              <span className="text-emerald-400 font-semibold">
-                {match.my_home_pred} - {match.my_away_pred}
-              </span>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {error && <div className="text-xs text-red-400 text-center">{error}</div>}
-          <button
-            onClick={handleSave}
-            disabled={loading || isExpired}
-            title={isExpired ? 'Prazo para palpitar expirado' : ''}
-            className={`w-full px-2 py-1 text-white text-xs font-medium rounded transition-colors ${
-              isExpired
-                ? 'bg-slate-500 cursor-not-allowed opacity-50'
-                : 'bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50'
-            }`}>
-            {isExpired ? 'Prazo expirado' : loading ? 'Salvando...' : 'Salvar'}
-          </button>
+            <div className="text-xs text-slate-400">Placar final</div>
+          </div>
         </div>
       )}
+
+      {/* Saved Prediction Display */}
+      {match.my_home_pred !== null && match.my_away_pred !== null && (
+        <div className="text-xs text-center mb-3 text-slate-400">
+          Palpite:{' '}
+          <span className="text-emerald-400 font-semibold">
+            {match.my_home_pred} - {match.my_away_pred}
+          </span>
+        </div>
+      )}
+
+      {/* Save Button and Error Messages */}
+      <div className="space-y-2">
+        {error && <div className="text-xs text-red-400 text-center">{error}</div>}
+        <button
+          onClick={handleSave}
+          disabled={loading || isMatchStarted || isExpired}
+          title={isMatchStarted ? 'Jogo iniciado' : isExpired ? 'Prazo para palpitar expirado' : ''}
+          className={`w-full px-2 py-1 text-white text-xs font-medium rounded transition-colors ${
+            isMatchStarted || isExpired
+              ? 'bg-slate-500 cursor-not-allowed opacity-50'
+              : 'bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50'
+          }`}>
+          {isMatchStarted ? 'Jogo iniciado' : isExpired ? 'Prazo expirado' : loading ? 'Salvando...' : 'Salvar'}
+        </button>
+      </div>
     </div>
   );
 };
