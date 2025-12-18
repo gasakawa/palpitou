@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trophy, ArrowLeft, Mail, Lock } from 'lucide-react';
+import { ArrowLeft, Mail, Lock, Loader2 } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
+import logo from '../assets/images/palpitou-logo.png';
 
 interface SignInProps {
   onBack?: () => void;
@@ -11,12 +13,13 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     if (!email || !password) {
       setError('Por favor, preencha email e senha.');
       return;
@@ -25,8 +28,27 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
       setError('Por favor, insira um email válido.');
       return;
     }
+
     setError('');
-    alert('Login realizado com sucesso! (Demo)');
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        setError(error.message === 'Invalid login credentials' ? 'Email ou senha incorretos.' : error.message);
+      } else {
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      setError('Ocorreu um erro inesperado. Tente novamente.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBack = () => {
@@ -55,7 +77,7 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
       <div className="relative z-10 w-full max-w-sm rounded-3xl bg-gradient-to-b from-[#ffffff10] to-[#121212] backdrop-blur-xl border border-white/10 shadow-2xl p-8 flex flex-col items-center">
         {/* Logo */}
         <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 mb-6 shadow-lg shadow-emerald-500/20">
-          <Trophy className="text-white w-7 h-7" />
+          <img src={logo} alt="Palpitou" className="rounded-lg object-cover" />
         </div>
 
         {/* Title */}
@@ -71,8 +93,10 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
                 placeholder="Email"
                 type="email"
                 value={email}
-                className="w-full pl-11 pr-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all"
+                disabled={loading}
+                className="w-full pl-11 pr-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSignIn()}
               />
             </div>
 
@@ -82,8 +106,10 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
                 placeholder="Senha"
                 type="password"
                 value={password}
-                className="w-full pl-11 pr-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all"
+                disabled={loading}
+                className="w-full pl-11 pr-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSignIn()}
               />
             </div>
 
@@ -94,8 +120,9 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
 
           <button
             onClick={handleSignIn}
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-5 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2 text-sm">
-            Entrar
+            disabled={loading}
+            className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-5 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2 text-sm flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100">
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Entrar'}
           </button>
 
           <div className="relative flex py-2 items-center">
