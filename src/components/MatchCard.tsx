@@ -148,6 +148,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
             />
           </div>
         </div>
+
+        {/* No Prediction Message */}
+        {isMatchStarted && match.my_home_pred === null && match.my_away_pred === null && (
+          <div className="text-xs text-center text-slate-400 italic mt-2 mb-2">
+            Que pena, este jogo não teve palpite
+          </div>
+        )}
       </div>
 
       {/* Match Time and Countdown */}
