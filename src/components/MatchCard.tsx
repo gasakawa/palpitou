@@ -109,7 +109,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
         </div>
 
         {/* Predictions Inputs */}
-        {!isMatchStarted && match.my_home_pred === null && match.my_away_pred === null ? (
+        {!isMatchStarted ? (
           <div className="grid grid-cols-2 gap-2 mb-2">
             <div>
               <label className="text-xs text-slate-400 block mb-1">{match.home_team}</label>
@@ -176,21 +176,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
               </span>
             </div>
           )}
-        </div>
-      ) : match.my_home_pred !== null && match.my_away_pred !== null && homePred === '' && awayPred === '' ? (
-        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-2 text-center text-xs">
-          <div className="text-slate-400 mb-1">Palpite salvo:</div>
-          <div className="font-semibold text-emerald-400 mb-2">
-            {match.my_home_pred} - {match.my_away_pred}
-          </div>
-          <button
-            onClick={() => {
-              setHomePred(match.my_home_pred?.toString() || '');
-              setAwayPred(match.my_away_pred?.toString() || '');
-            }}
-            className="text-emerald-400 hover:text-emerald-300 transition-colors text-xs underline">
-            Editar
-          </button>
         </div>
       ) : (
         <div className="space-y-2">
