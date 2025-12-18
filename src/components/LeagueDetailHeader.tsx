@@ -15,12 +15,7 @@ export const LeagueDetailHeader: React.FC<LeagueDetailHeaderProps> = ({ league, 
         <div>
           <h1 className="text-3xl font-bold text-emerald-400 mb-2">{league.league_name}</h1>
           <div className="space-y-1 text-sm text-slate-400">
-            <p>
-              <span className="text-white/60">Campeonato:</span> {league.championship_name}
-            </p>
-            <p>
-              <span className="text-white/60">Seu papel:</span> {league.role === 'admin' ? 'Administrador' : 'Membro'}
-            </p>
+            <p>{league.championship_name}</p>
           </div>
         </div>
 

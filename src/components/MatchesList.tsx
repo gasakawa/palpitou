@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Match, upsertPrediction } from '../lib/rpc/leagues';
 import { MatchCard } from './MatchCard';
 import { useToast } from '../contexts/ToastContext';
@@ -13,15 +13,31 @@ interface MatchesListProps {
 
 export const MatchesList: React.FC<MatchesListProps> = ({ leagueId, matches, loading, error, onPredictionSaved }) => {
   const { addToast } = useToast();
+  const [updatedMatches, setUpdatedMatches] = useState<Record<string, Match>>({});
 
   const handleSavePrediction = async (matchId: string, homePred: number, awayPred: number) => {
     try {
       await upsertPrediction(leagueId, matchId, homePred, awayPred);
       addToast('Palpite salvo com sucesso!', 'success');
-      onPredictionSaved();
     } catch (err) {
       addToast('Erro ao salvar palpite', 'error');
       throw err;
+    }
+  };
+
+  const handlePredictionUpdate = (matchId: string, homePred: number, awayPred: number) => {
+    // Update local state to reflect the saved prediction
+    const matchToUpdate = matches.find((m) => m.match_id === matchId);
+    if (matchToUpdate) {
+      setUpdatedMatches((prev) => ({
+        ...prev,
+        [matchId]: {
+          ...matchToUpdate,
+          my_home_pred: homePred,
+          my_away_pred: awayPred,
+          my_prediction_updated_at: new Date().toISOString(),
+        },
+      }));
     }
   };
 
@@ -51,13 +67,17 @@ export const MatchesList: React.FC<MatchesListProps> = ({ leagueId, matches, loa
 
   return (
     <div className="grid gap-4">
-      {matches.map((match) => (
-        <MatchCard
-          key={match.match_id}
-          match={match}
-          onSavePrediction={(home, away) => handleSavePrediction(match.match_id, home, away)}
-        />
-      ))}
+      {matches.map((match) => {
+        const displayMatch = updatedMatches[match.match_id] || match;
+        return (
+          <MatchCard
+            key={match.match_id}
+            match={displayMatch}
+            onSavePrediction={(home, away) => handleSavePrediction(match.match_id, home, away)}
+            onPredictionUpdate={handlePredictionUpdate}
+          />
+        );
+      })}
     </div>
   );
 };

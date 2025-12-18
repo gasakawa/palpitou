@@ -94,7 +94,7 @@ export const fetchLeagueDetails = async (leagueId: string): Promise<LeagueDetail
     });
 
     if (error) throw error;
-    return data as LeagueDetails;
+    return data && data.length > 0 ? (data[0] as LeagueDetails) : null;
   } catch (err) {
     console.error('Error fetching league details:', err);
     throw err;

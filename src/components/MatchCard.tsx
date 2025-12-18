@@ -5,9 +5,10 @@ import { Clock, Check } from 'lucide-react';
 interface MatchCardProps {
   match: Match;
   onSavePrediction: (homePred: number, awayPred: number) => Promise<void>;
+  onPredictionUpdate?: (matchId: string, homePred: number, awayPred: number) => void;
 }
 
-export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction }) => {
+export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, onPredictionUpdate }) => {
   const [homePred, setHomePred] = useState<string>(match.my_home_pred?.toString() || '');
   const [awayPred, setAwayPred] = useState<string>(match.my_away_pred?.toString() || '');
   const [loading, setLoading] = useState(false);
@@ -37,7 +38,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction })
     setLoading(true);
 
     try {
-      await onSavePrediction(parseInt(homePred, 10), parseInt(awayPred, 10));
+      const home = parseInt(homePred, 10);
+      const away = parseInt(awayPred, 10);
+      await onSavePrediction(home, away);
+      // Notify parent of successful save
+      if (onPredictionUpdate) {
+        onPredictionUpdate(match.match_id, home, away);
+      }
     } catch (err) {
       setError('Erro ao salvar palpite');
     } finally {
@@ -98,43 +105,62 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction })
         </div>
       ) : (
         <div className="space-y-3">
-          <div className="flex gap-2">
-            <div className="flex-1">
-              <label className="text-xs text-slate-400 block mb-1">Palpite - {match.home_team}</label>
-              <input
-                type="number"
-                value={homePred}
-                onChange={(e) => setHomePred(e.target.value)}
-                disabled={loading}
-                min="0"
-                max="99"
-                className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-center focus:outline-none focus:border-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="0"
-              />
+          {match.my_home_pred !== null && match.my_away_pred !== null && homePred === '' && awayPred === '' ? (
+            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 text-center">
+              <div className="text-xs text-slate-400 mb-2">Seu palpite salvo:</div>
+              <div className="text-lg font-semibold text-emerald-400">
+                {match.my_home_pred} - {match.my_away_pred}
+              </div>
+              <button
+                onClick={() => {
+                  setHomePred(match.my_home_pred?.toString() || '');
+                  setAwayPred(match.my_away_pred?.toString() || '');
+                }}
+                className="mt-2 text-xs text-emerald-400 hover:text-emerald-300 transition-colors">
+                Editar palpite
+              </button>
             </div>
-            <div className="flex-1">
-              <label className="text-xs text-slate-400 block mb-1">Palpite - {match.away_team}</label>
-              <input
-                type="number"
-                value={awayPred}
-                onChange={(e) => setAwayPred(e.target.value)}
+          ) : (
+            <>
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <label className="text-xs text-slate-400 block mb-1">Palpite - {match.home_team}</label>
+                  <input
+                    type="number"
+                    value={homePred}
+                    onChange={(e) => setHomePred(e.target.value)}
+                    disabled={loading}
+                    min="0"
+                    max="99"
+                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-center focus:outline-none focus:border-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    placeholder="0"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="text-xs text-slate-400 block mb-1">Palpite - {match.away_team}</label>
+                  <input
+                    type="number"
+                    value={awayPred}
+                    onChange={(e) => setAwayPred(e.target.value)}
+                    disabled={loading}
+                    min="0"
+                    max="99"
+                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-center focus:outline-none focus:border-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+
+              {error && <div className="text-xs text-red-400">{error}</div>}
+
+              <button
+                onClick={handleSave}
                 disabled={loading}
-                min="0"
-                max="99"
-                className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-center focus:outline-none focus:border-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="0"
-              />
-            </div>
-          </div>
-
-          {error && <div className="text-xs text-red-400">{error}</div>}
-
-          <button
-            onClick={handleSave}
-            disabled={loading}
-            className="w-full px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-            {loading ? 'Salvando...' : 'Salvar palpite'}
-          </button>
+                className="w-full px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                {loading ? 'Salvando...' : 'Salvar palpite'}
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>
