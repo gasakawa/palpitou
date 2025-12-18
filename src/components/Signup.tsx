@@ -5,11 +5,11 @@ import { supabase } from '../lib/supabaseClient';
 import logo from '../assets/images/palpitou-logo.png';
 import { useToast } from '../contexts/ToastContext';
 
-interface SignInProps {
+interface SignUpProps {
   onBack?: () => void;
 }
 
-export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
+export const SignUp: React.FC<SignUpProps> = ({ onBack }) => {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const [email, setEmail] = React.useState('');
@@ -21,7 +21,7 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  const handleSignIn = async () => {
+  const handleSignUp = async () => {
     if (!email || !password) {
       setError('Por favor, preencha email e senha.');
       return;
@@ -35,18 +35,17 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
       });
 
       if (error) {
-        const msg = error.message === 'Invalid login credentials' ? 'Email ou senha incorretos.' : error.message;
-        setError(msg);
-        addToast(msg, 'error');
+        setError(error.message);
+        addToast(error.message, 'error');
       } else {
-        addToast('Login realizado com sucesso!', 'success');
-        navigate('/dashboard');
+        addToast('Cadastro realizado! Verifique seu email para confirmar.', 'success');
+        navigate('/signin');
       }
     } catch (err) {
       const msg = 'Ocorreu um erro inesperado. Tente novamente.';
@@ -100,8 +99,8 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl font-bold text-white mb-2 text-center">Bem-vindo de volta</h2>
-        <p className="text-slate-400 text-sm mb-8 text-center">Entre na sua conta para gerenciar seus bolões</p>
+        <h2 className="text-2xl font-bold text-white mb-2 text-center">Crie sua conta</h2>
+        <p className="text-slate-400 text-sm mb-8 text-center">Junte-se ao Palpitou e comece a jogar</p>
 
         {/* Form */}
         <div className="flex flex-col w-full gap-4">
@@ -115,7 +114,7 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
                 disabled={loading}
                 className="w-full pl-11 pr-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSignIn()}
+                onKeyDown={(e) => e.key === 'Enter' && handleSignUp()}
               />
             </div>
 
@@ -128,7 +127,7 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
                 disabled={loading}
                 className="w-full pl-11 pr-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSignIn()}
+                onKeyDown={(e) => e.key === 'Enter' && handleSignUp()}
               />
             </div>
 
@@ -138,10 +137,10 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
           </div>
 
           <button
-            onClick={handleSignIn}
+            onClick={handleSignUp}
             disabled={loading}
             className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-5 py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2 text-sm flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Entrar'}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Cadastrar'}
           </button>
 
           <div className="relative flex py-2 items-center">
@@ -164,9 +163,9 @@ export const SignIn: React.FC<SignInProps> = ({ onBack }) => {
 
           <div className="w-full text-center mt-4">
             <span className="text-xs text-slate-400">
-              Não tem uma conta?{' '}
-              <Link to="/signup" className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors">
-                Crie agora, é grátis!
+              Já tem uma conta?{' '}
+              <Link to="/signin" className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors">
+                Entre agora
               </Link>
             </span>
           </div>
