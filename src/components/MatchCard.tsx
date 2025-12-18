@@ -114,6 +114,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
         {/* Predictions Inputs */}
         <div className="grid grid-cols-2 gap-2 mb-2">
           <div>
+            <label className="text-xs text-slate-400 block mb-1">{match.home_team}</label>
             <input
               type="number"
               value={homePred}
@@ -126,6 +127,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
             />
           </div>
           <div>
+            <label className="text-xs text-slate-400 block mb-1">{match.away_team}</label>
             <input
               type="number"
               value={awayPred}
@@ -161,16 +163,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
             </div>
             <div className="text-xs text-slate-400">Placar final</div>
           </div>
-        </div>
-      )}
-
-      {/* Saved Prediction Display */}
-      {match.my_home_pred !== null && match.my_away_pred !== null && (
-        <div className="text-xs text-center mb-3 text-slate-400">
-          Palpite:{' '}
-          <span className="text-emerald-400 font-semibold">
-            {match.my_home_pred} - {match.my_away_pred}
-          </span>
         </div>
       )}
 
