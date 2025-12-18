@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { useToast } from '../contexts/ToastContext';
-import { Copy, Check } from 'lucide-react';
+import { LeagueCard } from './LeagueCard';
 
 interface League {
   league_id: string;
@@ -88,33 +88,18 @@ export const LeaguesList: React.FC<{ onCreateNew: () => void }> = ({ onCreateNew
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {leagues.map((league) => (
-          <div
+          <LeagueCard
             key={league.league_id}
-            className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-colors">
-            <h3 className="text-emerald-400 font-semibold mb-2">{league.league_name}</h3>
-            <div className="space-y-2 text-sm text-slate-400">
-              <p>
-                <span className="text-white/60">Campeonato:</span> {league.championship_name}
-              </p>
-              <p>
-                <span className="text-white/60">Papel:</span> {league.role}
-              </p>
-              <div className="flex items-center gap-2">
-                <span className="text-white/60">Convite:</span>
-                <code className="bg-white/5 px-2 py-1 rounded text-xs font-mono">{league.join_code}</code>
-                <button
-                  onClick={() => copyToClipboard(league.join_code)}
-                  className="ml-auto p-1 hover:bg-white/10 rounded transition-colors">
-                  {copiedCode === league.join_code ? (
-                    <Check className="w-4 h-4 text-emerald-400" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-slate-400 hover:text-white" />
-                  )}
-                </button>
-              </div>
-              <p className="text-xs text-slate-500">Data: {formatDate(league.created_at)}</p>
-            </div>
-          </div>
+            league_id={league.league_id}
+            league_name={league.league_name}
+            join_code={league.join_code}
+            role={league.role}
+            championship_name={league.championship_name}
+            created_at={league.created_at}
+            copiedCode={copiedCode}
+            onCopyToClipboard={copyToClipboard}
+            formatDate={formatDate}
+          />
         ))}
       </div>
     </div>

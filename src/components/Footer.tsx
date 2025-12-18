@@ -1,26 +1,32 @@
-import Logo from './Logo';
+interface FooterProps {
+  theme?: 'light' | 'dark';
+}
 
-export default function Footer() {
+export default function Footer({ theme = 'light' }: FooterProps) {
+  const isDark = theme === 'dark';
+  const bgColor = isDark ? '' : 'bg-slate-50';
+  const borderColor = isDark ? 'border-white/10' : 'border-slate-200';
+  const textColor = isDark ? 'text-slate-400' : 'text-slate-600';
+  const textSecondary = isDark ? 'text-slate-500' : 'text-slate-500';
+  const hoverColor = isDark ? 'hover:text-emerald-400' : 'hover:text-emerald-600';
+
   return (
-    <footer className="bg-slate-50 border-t border-slate-200 py-12">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <Logo />
-
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-600">
-            <a href="#" className="hover:text-emerald-600 transition-colors">
-              Termos de uso
-            </a>
-            <a href="#" className="hover:text-emerald-600 transition-colors">
-              Política de privacidade
-            </a>
-            <a href="#" className="hover:text-emerald-600 transition-colors">
-              Requisitos técnicos
-            </a>
-          </div>
-
-          <span className="text-sm text-slate-500">© 2026 Palpitou</span>
+    <footer className={`border-t ${borderColor} ${bgColor} py-4 bottom-0 fixed w-full`}>
+      <div className="flex flex-col items-center text-sm">
+        <div className="flex items-center gap-4 text-sm">
+          <a href="#" className={`${textColor} ${hoverColor} transition-colors`}>
+            Termos de uso
+          </a>
+          <div className="hidden sm:block w-px h-4 bg-white/10" />
+          <a href="#" className={`${textColor} ${hoverColor} transition-colors`}>
+            Política de Privacidade
+          </a>
+          <div className="hidden sm:block w-px h-4 bg-white/10" />
+          <a href="#" className={`${textColor} ${hoverColor} transition-colors`}>
+            Regulamento
+          </a>
         </div>
+        <p className={`text-center text-xs ${textSecondary} mt-4`}>© 2026 Palpitou</p>
       </div>
     </footer>
   );
