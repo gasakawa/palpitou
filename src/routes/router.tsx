@@ -1,30 +1,16 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { RouteConfig } from './types';
+import React from 'react';
+import { createBrowserRouter, RouteObject, useNavigate } from 'react-router-dom';
+import Home from '../components/Home';
+import { SignIn } from '../components/Sigin';
 
-const routeConfigs: RouteConfig[] = [{ path: '/inicio', element: <Navigate to="/" />, permission: 'public' }];
-
-export const createRoute = (config: RouteConfig): RouteObject => {
-  const {
-    path,
-    element,
-    title,
-    permission,
-    selectCompanyIsRequired,
-    providers,
-    children,
-    loader,
-    action,
-    errorElement,
-  } = config;
-
-  return {
-    path,
-    element: wrapElement(element, title, permission, selectCompanyIsRequired, providers, wrapWithMainLayout !== false),
-    loader,
-    action,
-    errorElement: errorElement ? errorElement : <RouteErrorBoundary />,
-    children: children?.map(createRoute),
-  };
+const SignInRoute: React.FC = () => {
+  const navigate = useNavigate();
+  return <SignIn onBack={() => navigate('/')} />;
 };
 
-export const router = createBrowserRouter(routeConfigs.map(createRoute));
+const routes: RouteObject[] = [
+  { path: '/', element: <Home /> },
+  { path: '/signin', element: <SignInRoute /> },
+];
+
+export const router = createBrowserRouter(routes);
