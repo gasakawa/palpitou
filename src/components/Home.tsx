@@ -1,24 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trophy, Users, Gamepad2, Menu, X, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Trophy, Users, Gamepad2, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Button } from './ui/Button';
 import { AccordionItem } from './ui/Accordion';
+import Header from './Header';
+import Footer from './Footer';
 
 const Home: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
   const navigate = useNavigate();
 
   const toggleAccordion = (index: number) => {
     setOpenAccordion(openAccordion === index ? null : index);
-  };
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsMenuOpen(false);
-    }
   };
 
   const handleSignInNavigation = () => {
@@ -28,79 +23,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-emerald-100">
-      <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <button
-            type="button"
-            className="flex items-center space-x-2"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <span className="bg-emerald-500 p-1.5 rounded-lg">
-              <Trophy className="h-5 w-5 text-white" />
-            </span>
-            <span className="text-xl font-bold tracking-tight text-slate-900">Palpitando</span>
-          </button>
-
-          <nav className="hidden md:flex items-center space-x-8">
-            <button
-              type="button"
-              onClick={() => scrollToSection('como-funciona')}
-              className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">
-              Como funciona
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollToSection('faq')}
-              className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">
-              Dúvidas
-            </button>
-            <button
-              type="button"
-              onClick={handleSignInNavigation}
-              className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">
-              Entrar
-            </button>
-            <Button size="sm" onClick={handleSignInNavigation}>
-              Criar bolão
-            </Button>
-          </nav>
-
-          <button
-            type="button"
-            className="md:hidden p-2 text-slate-600"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-expanded={isMenuOpen}
-            aria-label="Alternar menu">
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-
-        {isMenuOpen && (
-          <div className="md:hidden bg-white border-b border-slate-100 p-4 space-y-4 absolute w-full shadow-lg animate-in slide-in-from-top-5">
-            <button
-              type="button"
-              onClick={() => scrollToSection('como-funciona')}
-              className="block w-full text-left py-2 text-sm font-medium text-slate-600">
-              Como funciona
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollToSection('faq')}
-              className="block w-full text-left py-2 text-sm font-medium text-slate-600">
-              Dúvidas
-            </button>
-            <button
-              type="button"
-              onClick={handleSignInNavigation}
-              className="block w-full text-left py-2 text-sm font-medium text-slate-600">
-              Entrar
-            </button>
-            <Button className="w-full" onClick={handleSignInNavigation}>
-              Criar bolão
-            </Button>
-          </div>
-        )}
-      </header>
-
+      <Header />
       <main className="pt-16">
         <section className="relative overflow-hidden pt-16 pb-24 lg:pt-32 lg:pb-40">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10">
@@ -113,17 +36,16 @@ const Home: React.FC = () => {
 
           <div className="container mx-auto px-4 text-center max-w-4xl">
             <div className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-600 mb-8 shadow-sm">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />A temporada 2025 já começou
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />A temporada 2026 já começou
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]">
-              Palpite, ranking e zoeira. <br className="hidden md:block" />
+              Palpite, ranking e resenha. <br className="hidden md:block" />
               <span className="text-emerald-500">Tudo no mesmo bolão.</span>
             </h1>
 
             <p className="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Crie seu bolão de futebol em minutos, convide seus amigos e dispute rodada a rodada com pontuação
-              transparente.
+              Crie seu bolão de futebol em minutos, convide seus amigos e dispute rodada a rodada.
             </p>
 
             <div className="flex flex-col items-center gap-4">
@@ -134,13 +56,13 @@ const Home: React.FC = () => {
                 Criar meu bolão grátis
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <p className="text-xs text-slate-500 flex items-center gap-2">
+              {/* <p className="text-xs text-slate-500 flex items-center gap-2">
                 <CheckCircle2 className="h-3 w-3 text-emerald-500" /> Sem pagamento
                 <span className="text-slate-300">•</span>
                 <CheckCircle2 className="h-3 w-3 text-emerald-500" /> Sem anúncios
                 <span className="text-slate-300">•</span>
                 <CheckCircle2 className="h-3 w-3 text-emerald-500" /> Funciona no celular
-              </p>
+              </p> */}
             </div>
           </div>
         </section>
@@ -226,10 +148,10 @@ const Home: React.FC = () => {
 
             <div className="space-y-2">
               <AccordionItem
-                title="Precisa pagar para usar o Palpitando?"
+                title="Precisa pagar para usar o Palpitou?"
                 isOpen={openAccordion === 0}
                 onClick={() => toggleAccordion(0)}>
-                Não. O Palpitando é 100% gratuito. Você pode criar ligas e participar sem custos de assinatura ou taxas
+                Não. O Palpitou é 100% gratuito. Você pode criar ligas e participar sem custos de assinatura ou taxas
                 ocultas.
               </AccordionItem>
 
@@ -245,8 +167,8 @@ const Home: React.FC = () => {
                 title="Tem dinheiro envolvido?"
                 isOpen={openAccordion === 2}
                 onClick={() => toggleAccordion(2)}>
-                Isso fica totalmente combinado entre os participantes da liga (off-app). O Palpitando cuida apenas da
-                organização, pontuação e do ranking oficial. Nós não processamos pagamentos.
+                Isso fica totalmente combinado entre os participantes da liga. O Palpitou cuida apenas da organização,
+                pontuação e do ranking oficial. Nós não processamos pagamentos.
               </AccordionItem>
 
               <AccordionItem
@@ -260,33 +182,7 @@ const Home: React.FC = () => {
           </div>
         </section>
       </main>
-
-      <footer className="bg-slate-50 border-t border-slate-200 py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <span className="flex items-center space-x-2">
-              <span className="bg-slate-200 p-1.5 rounded-lg">
-                <Trophy className="h-4 w-4 text-slate-600" />
-              </span>
-              <span className="text-lg font-bold text-slate-800">Palpitando</span>
-            </span>
-
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-600">
-              <a href="#" className="hover:text-emerald-600 transition-colors">
-                Termos de uso
-              </a>
-              <a href="#" className="hover:text-emerald-600 transition-colors">
-                Política de privacidade
-              </a>
-              <a href="#" className="hover:text-emerald-600 transition-colors">
-                Requisitos técnicos
-              </a>
-            </div>
-
-            <span className="text-sm text-slate-500">© 2025 Palpitando</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
