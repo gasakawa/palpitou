@@ -81,9 +81,9 @@ const Home: React.FC = () => {
                 <span className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Trophy className="h-7 w-7" />
                 </span>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">1. Crie sua liga</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">1. Crie seu bolão</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Escolha o campeonato (Brasileirão, Champions, etc.), dê um nome criativo para a liga e gere um código
+                  Escolha o campeonato (Brasileirão, Champions, etc.), dê um nome criativo para o bolão e gere um código
                   de convite único.
                 </p>
               </div>
@@ -94,7 +94,7 @@ const Home: React.FC = () => {
                 </span>
                 <h3 className="text-xl font-bold text-slate-900 mb-3">2. Convide os amigos</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Compartilhe o link ou código no WhatsApp da galera e monte seu grupo. Cada liga é privada e segura.
+                  Compartilhe o link ou código no WhatsApp da galera e monte seu grupo. Cada bolão é privado e seguro.
                 </p>
               </div>
 
@@ -122,7 +122,7 @@ const Home: React.FC = () => {
                 <div className="max-w-xl">
                   <h2 className="text-3xl md:text-4xl font-bold mb-4">Pronto para começar o bolão?</h2>
                   <p className="text-emerald-50 opacity-90 text-lg">
-                    Crie sua liga agora e comece a disputar com seus amigos ainda hoje. É rápido, fácil e grátis.
+                    Crie seu bolão agora e comece a disputar com seus amigos ainda hoje. É rápido, fácil e grátis.
                   </p>
                 </div>
                 <div className="flex-shrink-0">
@@ -151,23 +151,23 @@ const Home: React.FC = () => {
                 title="Precisa pagar para usar o Palpitou?"
                 isOpen={openAccordion === 0}
                 onClick={() => toggleAccordion(0)}>
-                Não. O Palpitou é 100% gratuito. Você pode criar ligas e participar sem custos de assinatura ou taxas
+                Não. O Palpitou é 100% gratuito. Você pode criar bolões e participar sem custos de assinatura ou taxas
                 ocultas.
               </AccordionItem>
 
               <AccordionItem
-                title="Posso criar mais de uma liga?"
+                title="Posso criar mais de um bolão?"
                 isOpen={openAccordion === 1}
                 onClick={() => toggleAccordion(1)}>
-                Sim. Você pode criar quantas ligas quiser (uma para o trabalho, uma para a família, outra para os amigos
-                do futebol) e participar de várias simultaneamente.
+                Sim. Você pode criar quantos bolões quiser (um para o trabalho, um para a família, outro para os amigos
+                do futebol) e participar de vários simultaneamente.
               </AccordionItem>
 
               <AccordionItem
                 title="Tem dinheiro envolvido?"
                 isOpen={openAccordion === 2}
                 onClick={() => toggleAccordion(2)}>
-                Isso fica totalmente combinado entre os participantes da liga. O Palpitou cuida apenas da organização,
+                Isso fica totalmente combinado entre os participantes do bolão. O Palpitou cuida apenas da organização,
                 pontuação e do ranking oficial. Nós não processamos pagamentos.
               </AccordionItem>
 
