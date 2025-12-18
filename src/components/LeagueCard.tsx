@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Copy, Check } from 'lucide-react';
 
 interface LeagueCardProps {
@@ -24,10 +25,12 @@ export const LeagueCard: React.FC<LeagueCardProps> = ({
   onCopyToClipboard,
   formatDate,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div
-      key={league_id}
-      className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-colors">
+      onClick={() => navigate(`/leagues/${league_id}`)}
+      className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-colors cursor-pointer">
       <h3 className="text-emerald-400 font-semibold mb-2">{league_name}</h3>
       <div className="space-y-2 text-sm text-slate-400">
         <p>{championship_name}</p>
@@ -38,7 +41,10 @@ export const LeagueCard: React.FC<LeagueCardProps> = ({
           <span className="text-white/60">Convite:</span>
           <code className="bg-white/5 px-2 py-1 rounded text-xs font-mono">{join_code}</code>
           <button
-            onClick={() => onCopyToClipboard(join_code)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onCopyToClipboard(join_code);
+            }}
             className="ml-auto p-1 hover:bg-white/10 rounded transition-colors">
             {copiedCode === join_code ? (
               <Check className="w-4 h-4 text-emerald-400" />
