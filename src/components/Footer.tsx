@@ -19,7 +19,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <span className="text-sm text-slate-500">© 2025 Palpitando</span>
+          <span className="text-sm text-slate-500">© 2026 Palpitou</span>
         </div>
       </div>
     </footer>
