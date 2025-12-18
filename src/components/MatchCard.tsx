@@ -14,6 +14,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [countdown, setCountdown] = useState('');
+  const [isExpired, setIsExpired] = useState(false);
 
   const isMatchStarted = new Date(match.starts_at) <= new Date() || match.status === 'finished';
   const hasRealScore = match.home_score !== null && match.away_score !== null;
@@ -29,9 +30,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
 
       if (diff <= 0) {
         setCountdown('Prazo encerrado');
+        setIsExpired(true);
         return;
       }
 
+      setIsExpired(false);
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((diff / 1000 / 60) % 60);
@@ -142,20 +145,16 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
       </div>
 
       {/* Match Time and Countdown */}
-      <div className="text-xs text-slate-400 mb-3 space-y-1">
-        <div className="flex items-center gap-1">
-          <Clock className="w-3 h-3" />
-          <span>{formatDate(match.starts_at)}</span>
-        </div>
-        {!isMatchStarted && countdown && (
-          <div className="flex items-center gap-1 text-emerald-400">
+      {!isMatchStarted && countdown && (
+        <div className="text-xs mb-3">
+          <div className={`flex items-center gap-1 ${isExpired ? 'text-red-400' : 'text-emerald-400'}`}>
             <Clock className="w-3 h-3" />
             <span>
               Prazo para palpitar: <strong>{countdown}</strong>
             </span>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Match Status or Saved Prediction or Form */}
       {isMatchStarted ? (
@@ -182,9 +181,14 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
           {error && <div className="text-xs text-red-400 text-center">{error}</div>}
           <button
             onClick={handleSave}
-            disabled={loading}
-            className="w-full px-2 py-1 bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-medium rounded transition-colors disabled:opacity-50">
-            {loading ? 'Salvando...' : 'Salvar'}
+            disabled={loading || isExpired}
+            title={isExpired ? 'Prazo para palpitar expirado' : ''}
+            className={`w-full px-2 py-1 text-white text-xs font-medium rounded transition-colors ${
+              isExpired
+                ? 'bg-slate-500 cursor-not-allowed opacity-50'
+                : 'bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50'
+            }`}>
+            {isExpired ? 'Prazo expirado' : loading ? 'Salvando...' : 'Salvar'}
           </button>
         </div>
       )}

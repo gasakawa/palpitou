@@ -23,8 +23,8 @@ export const LeagueDetail: React.FC = () => {
   const [rounds, setRounds] = useState<string[]>([]);
   const [selectedRound, setSelectedRound] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [roundLoading, setRoundLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [requestId, setRequestId] = useState(0);
   const [leagueDetails, setLeagueDetails] = useState<LeagueDetails | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
@@ -54,13 +54,27 @@ export const LeagueDetail: React.FC = () => {
     loadAllMatches();
   }, [leagueId, addToast]);
 
-  const handleRoundSelect = (round: string) => {
+  const handleRoundSelect = async (round: string) => {
     setSelectedRound(round);
-    setRequestId((prev) => prev + 1);
+    setRoundLoading(true);
+    try {
+      const matches = await fetchLeagueMatches(leagueId, round);
+      setAllMatches(matches);
+    } catch (err) {
+      addToast('Erro ao carregar jogos da rodada', 'error');
+    } finally {
+      setRoundLoading(false);
+    }
   };
 
-  const handlePredictionSaved = () => {
-    setRequestId((prev) => prev + 1);
+  const handlePredictionSaved = async () => {
+    // Refresh matches for current round after prediction save
+    try {
+      const matches = await fetchLeagueMatches(leagueId, selectedRound);
+      setAllMatches(matches);
+    } catch (err) {
+      console.error('Erro ao atualizar matches:', err);
+    }
   };
 
   const handleCopyCode = () => {
@@ -71,8 +85,6 @@ export const LeagueDetail: React.FC = () => {
       setTimeout(() => setCopiedCode(null), 2000);
     }
   };
-
-  const currentMatches = allMatches.filter((m) => m.round === selectedRound);
 
   if (loading) {
     return (
@@ -100,26 +112,30 @@ export const LeagueDetail: React.FC = () => {
         </button>
 
         {leagueDetails && (
-          <LeagueDetailHeader league={leagueDetails} copiedCode={copiedCode} onCopyCode={handleCopyCode} />
-        )}
-
-        {rounds.length > 0 && (
-          <div className="bg-gradient-to-b from-[#ffffff10] to-[#121212] backdrop-blur-xl border border-white/10 rounded-2xl p-8 mb-8">
-            <h2 className="text-lg font-semibold mb-4">Rodadas</h2>
-            <RoundBadges rounds={rounds} selectedRound={selectedRound} onSelect={handleRoundSelect} />
+          <div className="mb-8">
+            <LeagueDetailHeader league={leagueDetails} copiedCode={copiedCode} onCopyCode={handleCopyCode} />
           </div>
         )}
 
+        <div className="mb-6">
+          <RoundBadges rounds={rounds} selectedRound={selectedRound} onSelect={handleRoundSelect} />
+        </div>
+
         <div className="bg-gradient-to-b from-[#ffffff10] to-[#121212] backdrop-blur-xl border border-white/10 rounded-2xl p-8">
           <h2 className="text-lg font-semibold mb-6">Jogos da Rodada {selectedRound}</h2>
-          <MatchesList
-            key={requestId}
-            leagueId={leagueId || ''}
-            matches={currentMatches}
-            loading={false}
-            error={error}
-            onPredictionSaved={handlePredictionSaved}
-          />
+          {roundLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-pulse text-slate-400">Carregando jogos da rodada...</div>
+            </div>
+          ) : (
+            <MatchesList
+              leagueId={leagueId || ''}
+              matches={allMatches}
+              loading={false}
+              error={error}
+              onPredictionSaved={handlePredictionSaved}
+            />
+          )}
         </div>
       </div>
     </div>
