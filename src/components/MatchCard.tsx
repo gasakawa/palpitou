@@ -14,10 +14,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [countdown, setCountdown] = useState('');
-  const [isExpired, setIsExpired] = useState(false);
 
   const isMatchStarted = new Date(match.starts_at) <= new Date() || match.status === 'finished';
-  const hasRealScore = match.home_score !== null && match.away_score !== null;
+  const isMatchFinished = match.status === 'finished';
+  const hasRealScore = isMatchFinished && match.home_score !== null && match.away_score !== null;
 
   // Countdown timer
   useEffect(() => {
@@ -30,11 +30,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
 
       if (diff <= 0) {
         setCountdown('Prazo encerrado');
-        setIsExpired(true);
         return;
       }
 
-      setIsExpired(false);
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((diff / 1000 / 60) % 60);
@@ -68,6 +66,12 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
       hour: '2-digit',
       minute: '2-digit',
     }).format(date);
+  };
+
+  const getButtonTitle = (): string => {
+    if (isMatchFinished) return 'Jogo finalizado';
+    if (isMatchStarted) return 'Jogo iniciado';
+    return '';
   };
 
   const handleSave = async () => {
@@ -104,17 +108,27 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
       {/* Teams and Score */}
       <div className="mb-3">
         <div className="text-white font-semibold text-sm mb-2">
-          <div className="flex justify-between items-center">
-            <span>{match.home_team}</span>
+          <div className="flex justify-between items-center gap-2">
+            <div className="flex flex-col items-center flex-1">
+              {match.home_team_image_url && (
+                <img src={match.home_team_image_url} alt={match.home_team} className="w-8 h-8 mb-1 object-contain" />
+              )}
+              <span className="text-xs text-center">{match.home_team}</span>
+            </div>
             <span className="text-slate-400 text-xs">vs</span>
-            <span>{match.away_team}</span>
+            <div className="flex flex-col items-center flex-1">
+              {match.away_team_image_url && (
+                <img src={match.away_team_image_url} alt={match.away_team} className="w-8 h-8 mb-1 object-contain" />
+              )}
+              <span className="text-xs text-center">{match.away_team}</span>
+            </div>
           </div>
         </div>
+        <div className="flex text-xs items-center justify-center pb-3">{match.venue_name}</div>
 
         {/* Predictions Inputs */}
         <div className="grid grid-cols-2 gap-2 mb-2">
           <div>
-            <label className="text-xs text-slate-400 block mb-1">{match.home_team}</label>
             <input
               type="number"
               value={homePred}
@@ -131,7 +145,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
             />
           </div>
           <div>
-            <label className="text-xs text-slate-400 block mb-1">{match.away_team}</label>
             <input
               type="number"
               value={awayPred}
@@ -149,10 +162,27 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
           </div>
         </div>
 
+        {/* Match Start DateTime */}
+        <div className="text-xs text-center text-slate-400 mb-2">{formatDate(match.starts_at)}</div>
+
+        {/* Saved Prediction */}
+        {match.my_home_pred !== null && match.my_away_pred !== null && (
+          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-2 mb-2">
+            <div className="text-xs text-emerald-400 font-medium text-center mb-1">Seu palpite</div>
+            <div className="text-white font-semibold text-center text-sm">
+              {match.my_home_pred} <span className="text-slate-400">-</span> {match.my_away_pred}
+            </div>
+          </div>
+        )}
+
         {/* No Prediction Message */}
+        {!isMatchStarted && match.my_home_pred === null && match.my_away_pred === null && (
+          <div className="text-xs text-center text-emerald-600 italic mt-2 mb-2">Jogo sem palpite informado</div>
+        )}
+        {/* No Prediction and match already started */}
         {isMatchStarted && match.my_home_pred === null && match.my_away_pred === null && (
-          <div className="text-xs text-center text-slate-400 italic mt-2 mb-2">
-            Que pena, este jogo não teve palpite
+          <div className="text-xs text-center text-emerald-600 italic mt-2 mb-2">
+            Que pena, a prazo de palpitar acabou!
           </div>
         )}
       </div>
@@ -160,7 +190,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
       {/* Match Time and Countdown */}
       {!isMatchStarted && countdown && (
         <div className="text-xs mb-3">
-          <div className={`flex items-center gap-1 ${isExpired ? 'text-red-400' : 'text-emerald-400'}`}>
+          <div className="flex items-center gap-1 text-emerald-400">
             <Clock className="w-3 h-3" />
             <span>
               Prazo para palpitar: <strong>{countdown}</strong>
@@ -186,14 +216,14 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
         {error && <div className="text-xs text-red-400 text-center">{error}</div>}
         <button
           onClick={handleSave}
-          disabled={loading || isMatchStarted || isExpired}
-          title={isMatchStarted ? 'Jogo iniciado' : isExpired ? 'Prazo para palpitar expirado' : ''}
+          disabled={loading || isMatchStarted}
+          title={getButtonTitle()}
           className={`w-full px-2 py-1 text-white text-xs font-medium rounded transition-colors ${
-            isMatchStarted || isExpired
+            isMatchStarted
               ? 'bg-slate-500 cursor-not-allowed opacity-50'
               : 'bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50'
           }`}>
-          {isMatchStarted ? 'Jogo iniciado' : isExpired ? 'Prazo expirado' : loading ? 'Salvando...' : 'Salvar'}
+          {isMatchFinished ? 'Jogo finalizado' : isMatchStarted ? 'Jogo iniciado' : loading ? 'Salvando...' : 'Salvar'}
         </button>
       </div>
     </div>

@@ -4,14 +4,19 @@ export interface Match {
   match_id: string;
   round: string;
   starts_at: string;
+  home_team_id: string;
   home_team: string;
+  home_team_image_url: string | null;
+  away_team_id: string;
   away_team: string;
+  away_team_image_url: string | null;
   home_score: number | null;
   away_score: number | null;
   status: string;
   my_home_pred: number | null;
   my_away_pred: number | null;
   my_prediction_updated_at: string | null;
+  venue_name: string | null;
 }
 
 export interface LeagueDetails {
