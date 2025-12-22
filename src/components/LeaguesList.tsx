@@ -49,8 +49,9 @@ export const LeaguesList: React.FC<{ onCreateNew: () => void }> = ({ onCreateNew
   };
 
   const copyToClipboard = (code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(code);
+    const join_code = `https://palpitou.com.br/invite/${code}`;
+    navigator.clipboard.writeText(join_code);
+    setCopiedCode(join_code);
     addToast('Código copiado!', 'success');
     setTimeout(() => setCopiedCode(null), 2000);
   };
