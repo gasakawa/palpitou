@@ -6,6 +6,7 @@ import { SignUp } from '../components/Signup';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { Dashboard } from '../components/Dashboard';
 import { LeagueDetail } from '../components/LeagueDetail';
+import { InvitePage } from '../components/InvitePage';
 
 const SignInRoute: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const routes: RouteObject[] = [
   { path: '/', element: <Home /> },
   { path: '/signin', element: <SignInRoute /> },
   { path: '/signup', element: <SignUpRoute /> },
+  { path: '/invite/:code', element: <InvitePage /> },
   {
     element: <ProtectedRoute />,
     children: [

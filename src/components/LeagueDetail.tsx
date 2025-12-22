@@ -79,8 +79,9 @@ export const LeagueDetail: React.FC = () => {
 
   const handleCopyCode = () => {
     if (leagueDetails) {
-      navigator.clipboard.writeText(leagueDetails.join_code);
-      setCopiedCode(leagueDetails.join_code);
+      const invitation = `https://palpitou.com.br/invite/${leagueDetails.join_code}`;
+      navigator.clipboard.writeText(invitation);
+      setCopiedCode(invitation);
       addToast('Código copiado!', 'success');
       setTimeout(() => setCopiedCode(null), 2000);
     }

@@ -29,6 +29,11 @@ export interface LeagueDetails {
   member_count?: number;
 }
 
+export interface JoinLeagueResponse {
+  league_id: string;
+  league_name: string;
+}
+
 export const fetchLeagueMatches = async (leagueId: string, round?: string): Promise<Match[]> => {
   try {
     const { data, error } = await supabase.rpc('list_league_matches_rpc', {
@@ -102,6 +107,20 @@ export const fetchLeagueDetails = async (leagueId: string): Promise<LeagueDetail
     return data && data.length > 0 ? (data[0] as LeagueDetails) : null;
   } catch (err) {
     console.error('Error fetching league details:', err);
+    throw err;
+  }
+};
+
+export const joinLeagueByCode = async (code: string): Promise<JoinLeagueResponse[]> => {
+  try {
+    const { data, error } = await supabase.rpc('join_league_by_code_rpc', {
+      code,
+    });
+
+    if (error) throw error;
+    return data || [];
+  } catch (err) {
+    console.error('Error joining league by code:', err);
     throw err;
   }
 };
