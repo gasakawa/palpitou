@@ -217,7 +217,7 @@ export const LeagueTransparencyModal: React.FC<LeagueTransparencyModalProps> = (
       <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl max-w-4xl w-full max-h-[85vh] overflow-hidden flex flex-col">
         {/* Modal Header */}
         <div className="sticky top-0 bg-[#1a1a1a] border-b border-white/10 p-6 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-white">Transparência da Liga</h2>
+          <h2 className="text-xl font-semibold text-white">Pontuação detalhada dos jogadores</h2>
           <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
             <X className="w-5 h-5 text-slate-400 hover:text-white" />
           </button>

@@ -53,7 +53,7 @@ export const LeagueCard: React.FC<LeagueCardProps> = ({
             )}
           </button>
         </div>
-        <p className="text-xs text-slate-500">Data: {formatDate(created_at)}</p>
+        <p className="text-xs text-slate-500">Criado em: {formatDate(created_at)}</p>
       </div>
     </div>
   );

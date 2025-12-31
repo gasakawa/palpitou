@@ -133,7 +133,7 @@ export const LeagueDetail: React.FC = () => {
             <button
               onClick={() => setIsTransparencyModalOpen(true)}
               className="px-6 py-3 bg-[#10B981]/20 border border-[#10B981]/40 text-[#10B981] rounded-lg hover:bg-[#10B981]/30 transition-colors font-medium">
-              Transparência da Liga
+              Pontuação detalhada
             </button>
           </div>
         </div>
