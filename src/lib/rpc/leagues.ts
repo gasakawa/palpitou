@@ -65,6 +65,27 @@ export interface MyPointsGameDetail {
   breakdown?: MyPointsBreakdown[];
 }
 
+export interface PlayerPointsDetail {
+  user_id: string;
+  display_name: string;
+  avatar_url: string | null;
+  match_id: string;
+  starts_at: string;
+  round: string;
+  home_team: string;
+  home_team_image_url: string | null;
+  away_team: string;
+  away_team_image_url: string | null;
+  home_score: number;
+  away_score: number;
+  home_pred: number;
+  away_pred: number;
+  exact_points: number;
+  winner_points: number;
+  diff_bonus_points: number;
+  total_points: number;
+}
+
 export const fetchLeagueMatches = async (leagueId: string, round?: string): Promise<Match[]> => {
   try {
     const { data, error } = await supabase.rpc('list_league_matches_rpc', {
@@ -180,6 +201,20 @@ export const fetchLeagueMyPointsDetails = async (leagueId: string): Promise<MyPo
     return data || [];
   } catch (err) {
     console.error('Error fetching my points details:', err);
+    throw err;
+  }
+};
+
+export const fetchLeaguePlayersPointsDetails = async (leagueId: string): Promise<PlayerPointsDetail[]> => {
+  try {
+    const { data, error } = await supabase.rpc('league_player_points_details_rpc', {
+      p_league_id: leagueId,
+    });
+
+    if (error) throw error;
+    return data || [];
+  } catch (err) {
+    console.error('Error fetching players points details:', err);
     throw err;
   }
 };
