@@ -34,6 +34,14 @@ export interface JoinLeagueResponse {
   league_name: string;
 }
 
+export interface LeagueRankingItem {
+  position: number;
+  user_id: string;
+  user_name: string;
+  points: number;
+  is_me: boolean;
+}
+
 export const fetchLeagueMatches = async (leagueId: string, round?: string): Promise<Match[]> => {
   try {
     const { data, error } = await supabase.rpc('list_league_matches_rpc', {
@@ -121,6 +129,20 @@ export const joinLeagueByCode = async (code: string): Promise<JoinLeagueResponse
     return data || [];
   } catch (err) {
     console.error('Error joining league by code:', err);
+    throw err;
+  }
+};
+
+export const fetchLeagueRanking = async (leagueId: string): Promise<LeagueRankingItem[]> => {
+  try {
+    const { data, error } = await supabase.rpc('league_ranking_with_position_rpc', {
+      p_league_id: leagueId,
+    });
+
+    if (error) throw error;
+    return data || [];
+  } catch (err) {
+    console.error('Error fetching league ranking:', err);
     throw err;
   }
 };
