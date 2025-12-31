@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
 import { useToast } from '../contexts/ToastContext';
 import { Loader2 } from 'lucide-react';
-
-interface Championship {
-  id: string;
-  name: string;
-}
+import { useChampionships } from '../hooks/useChampionships';
+import { supabase } from '../lib/supabaseClient';
 
 interface CreateLeagueFormProps {
   onSuccess: () => void;
@@ -14,37 +10,27 @@ interface CreateLeagueFormProps {
 }
 
 export const CreateLeagueForm: React.FC<CreateLeagueFormProps> = ({ onSuccess, onCancel }) => {
-  const [championships, setChampionships] = useState<Championship[]>([]);
   const [leagueName, setLeagueName] = useState('');
   const [championshipId, setChampionshipId] = useState('');
   const [loading, setLoading] = useState(false);
-  const [loadingChampionships, setLoadingChampionships] = useState(true);
   const { addToast } = useToast();
 
+  // React Query hook
+  const { data: championships = [], isLoading: loadingChampionships, error } = useChampionships();
+
+  // Set default championship on load
   useEffect(() => {
-    fetchChampionships();
-  }, []);
-
-  const fetchChampionships = async () => {
-    try {
-      setLoadingChampionships(true);
-      const { data, error } = await supabase
-        .from('championships')
-        .select('id, name')
-        .eq('is_active', true)
-        .order('name');
-
-      if (error) throw error;
-      setChampionships(data || []);
-      if (data && data.length > 0) {
-        setChampionshipId(data[0].id);
-      }
-    } catch (err) {
-      addToast('Erro ao carregar campeonatos', 'error');
-    } finally {
-      setLoadingChampionships(false);
+    if (championships.length > 0 && !championshipId) {
+      setChampionshipId(championships[0].id);
     }
-  };
+  }, [championships, championshipId]);
+
+  // Handle errors
+  useEffect(() => {
+    if (error) {
+      addToast('Erro ao carregar campeonatos', 'error');
+    }
+  }, [error, addToast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

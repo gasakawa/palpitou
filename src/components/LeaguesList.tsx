@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import React, { useState } from 'react';
 import { useToast } from '../contexts/ToastContext';
 import { LeagueCard } from './LeagueCard';
+import { useLeaguesList } from '../hooks/useLeaguesList';
 
 interface League {
   league_id: string;
@@ -14,28 +14,17 @@ interface League {
 }
 
 export const LeaguesList: React.FC<{ onCreateNew: () => void }> = ({ onCreateNew }) => {
-  const [leagues, setLeagues] = useState<League[]>([]);
-  const [loading, setLoading] = useState(true);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const { addToast } = useToast();
 
-  useEffect(() => {
-    fetchLeagues();
-  }, []);
+  // React Query hook
+  const { data: leagues = [], isLoading: loading, error } = useLeaguesList();
 
-  const fetchLeagues = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.rpc('list_my_leagues_rpc');
-
-      if (error) throw error;
-      setLeagues(data || []);
-    } catch (err) {
+  React.useEffect(() => {
+    if (error) {
       addToast('Erro ao carregar bolões', 'error');
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [error, addToast]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

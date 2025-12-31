@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { fetchLeagueDetails, LeagueDetails } from '../lib/rpc/leagues';
+import { useLeagueDetails } from '../hooks/useLeagueDetails';
 import { LeagueDetailHeader } from './LeagueDetailHeader';
 import { LeagueMatchesSection } from './LeagueMatchesSection';
 import { LeagueRankingSection } from './LeagueRankingSection';
@@ -15,32 +15,21 @@ export const LeagueDetail: React.FC = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
 
-  // State
-  const [loading, setLoading] = useState(true);
-  const [leagueDetails, setLeagueDetails] = useState<LeagueDetails | null>(null);
+  // React Query hook for league details
+  const { data: leagueDetails, isLoading, error } = useLeagueDetails(leagueId || '');
+
+  // Local UI state
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('ranking');
   const [isTransparencyModalOpen, setIsTransparencyModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-  // Load league details
-  useEffect(() => {
-    if (!leagueId) return;
-
-    const loadLeagueDetails = async () => {
-      try {
-        setLoading(true);
-        const details = await fetchLeagueDetails(leagueId);
-        setLeagueDetails(details);
-      } catch (err) {
-        addToast('Erro ao carregar bolão', 'error');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadLeagueDetails();
-  }, [leagueId, addToast]);
+  // Handle errors
+  React.useEffect(() => {
+    if (error) {
+      addToast('Erro ao carregar bolão', 'error');
+    }
+  }, [error, addToast]);
 
   const handleCopyCode = () => {
     if (leagueDetails) {
@@ -57,7 +46,7 @@ export const LeagueDetail: React.FC = () => {
     setIsTransparencyModalOpen(true);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-[#121212] text-white p-8 relative overflow-hidden w-full font-sans">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/20 rounded-full blur-[120px] pointer-events-none" />
