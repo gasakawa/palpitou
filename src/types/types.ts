@@ -38,10 +38,14 @@ export interface LeagueDetails {
 }
 
 export interface LeagueRankingItem {
-  position: number;
+  rank_position: number;
   user_id: string;
-  user_name: string;
+  display_name: string;
+  avatar_url: string | null;
   points: number;
+  exact_hits: number;
+  winner_hits: number;
+  games_count: number;
   is_me: boolean;
 }
 

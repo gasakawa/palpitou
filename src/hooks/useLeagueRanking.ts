@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchLeagueRanking, LeagueRankingItem } from '../lib/rpc/leagues';
+import { fetchLeagueRanking } from '../lib/rpc/leagues';
+import type { LeagueRankingItem } from '../types/types';
 
 export const useLeagueRanking = (leagueId: string | undefined) => {
   return useQuery({

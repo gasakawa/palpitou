@@ -42,7 +42,7 @@ export const MatchPredictionsPanel: React.FC<MatchPredictionsPanelProps> = ({ le
   const visiblePredictions = predictions || [];
 
   return (
-    <div className="mt-4 rounded-2xl border border-white/10 bg-white/5">
+    <div className="mt-4 px-2 rounded-2xl border border-white/10 bg-white/5">
       <AccordionItem title="Palpites dos outros jogadores" isOpen={isOpen} onClick={() => setIsOpen((prev) => !prev)}>
         <div className="space-y-4 text-white text-sm">
           {isLoading && (
@@ -75,9 +75,9 @@ export const MatchPredictionsPanel: React.FC<MatchPredictionsPanelProps> = ({ le
                 <div key={prediction.user_id} className="flex items-center justify-between gap-3">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-white">{prediction.display_name}</span>
+                      <span className="font-semibold text-white text-[0.9rem]">{prediction.display_name}</span>
                       {prediction.user_id === user?.id && (
-                        <span className="rounded-full border border-emerald-500/60 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-emerald-300">
+                        <span className="rounded-full border border-emerald-500/60 px-2 py-0.5 text-[0.5rem] uppercase tracking-[0.2em] text-emerald-300">
                           Você
                         </span>
                       )}
@@ -88,7 +88,7 @@ export const MatchPredictionsPanel: React.FC<MatchPredictionsPanelProps> = ({ le
                       </p>
                     )}
                   </div>
-                  <div className="text-sm font-semibold text-white">
+                  <div className="text-sm font-semibold text-white mr-2">
                     <span>{prediction.home_pred}</span>
                     <span className="text-slate-400 px-1">x</span>
                     <span>{prediction.away_pred}</span>

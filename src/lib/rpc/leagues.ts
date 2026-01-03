@@ -1,5 +1,5 @@
+import { LeagueRankingItem, MatchPrediction } from '@/src/types/types';
 import { supabase } from '../supabaseClient';
-import type { MatchPrediction } from '../types/types';
 
 export interface Match {
   match_id: string;
@@ -33,14 +33,6 @@ export interface LeagueDetails {
 export interface JoinLeagueResponse {
   league_id: string;
   league_name: string;
-}
-
-export interface LeagueRankingItem {
-  position: number;
-  user_id: string;
-  user_name: string;
-  points: number;
-  is_me: boolean;
 }
 
 export interface MyPointsBreakdown {

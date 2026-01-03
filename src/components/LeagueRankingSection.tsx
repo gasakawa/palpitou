@@ -32,11 +32,11 @@ const RankingTable: React.FC<RankingTableProps> = ({ ranking, onPlayerClick }) =
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                   item.is_me ? 'bg-[#10B981] text-[#121212]' : 'bg-white/10 text-white'
                 }`}>
-                {item.position}
+                {item.rank_position}
               </span>
             </div>
             <div>
-              <p className={item.is_me ? 'font-semibold text-[#10B981]' : 'text-white'}>{item.user_name}</p>
+              <p className={item.is_me ? 'font-semibold text-[#10B981]' : 'text-white'}>{item.display_name}</p>
             </div>
             <div className="text-right">
               <p className={`text-lg font-bold ${item.is_me ? 'text-[#10B981]' : 'text-white'}`}>{item.points}</p>
@@ -60,25 +60,22 @@ export const LeagueRankingSection: React.FC<LeagueRankingSectionProps> = ({ leag
     error: rankingError,
     refetch: refetchRanking,
   } = useLeagueRanking(leagueId);
+  const myStanding = ranking?.find((item) => item.is_me);
 
   return (
     <div className="space-y-4">
       {/* Your Position Card */}
       {ranking && ranking.length > 0 && (
         <div className="mb-6">
-          {ranking.find((item) => item.is_me) && (
+          {myStanding && (
             <div className="bg-gradient-to-r from-[#10B981]/20 to-[#10B981]/10 border border-[#10B981]/40 rounded-lg p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-[#10B981]/30 flex items-center justify-center">
-                  <span className="text-lg font-bold text-[#10B981]">
-                    {ranking.find((item) => item.is_me)?.position}º
-                  </span>
+                  <span className="text-lg font-bold text-[#10B981]">{myStanding?.rank_position}º</span>
                 </div>
                 <div>
                   <p className="text-sm text-slate-300">Sua Posição</p>
-                  <p className="text-lg font-semibold text-[#10B981]">
-                    {ranking.find((item) => item.is_me)?.points} pontos
-                  </p>
+                  <p className="text-lg font-semibold text-[#10B981]">{myStanding?.points} pontos</p>
                 </div>
               </div>
               <div className="text-right">
