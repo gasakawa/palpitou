@@ -1,4 +1,5 @@
 import { supabase } from '../supabaseClient';
+import type { MatchPrediction } from '../types/types';
 
 export interface Match {
   match_id: string;
@@ -97,6 +98,21 @@ export const fetchLeagueMatches = async (leagueId: string, round?: string): Prom
     return data || [];
   } catch (err) {
     console.error('Error fetching league matches:', err);
+    throw err;
+  }
+};
+
+export const fetchMatchPredictions = async (leagueId: string, matchId: string): Promise<MatchPrediction[]> => {
+  try {
+    const { data, error } = await supabase.rpc('list_match_predictions_with_names_rpc', {
+      p_league_id: leagueId,
+      p_match_id: matchId,
+    });
+
+    if (error) throw error;
+    return data || [];
+  } catch (err) {
+    console.error('Error fetching match predictions:', err);
     throw err;
   }
 };

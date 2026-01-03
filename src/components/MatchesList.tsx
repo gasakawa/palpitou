@@ -67,6 +67,7 @@ export const MatchesList: React.FC<MatchesListProps> = ({ leagueId, matches, loa
         <MatchCard
           key={match.match_id}
           match={match}
+          leagueId={leagueId}
           onSavePrediction={(home, away) => handleSavePrediction(match.match_id, home, away)}
           onPredictionUpdate={handlePredictionUpdate}
         />

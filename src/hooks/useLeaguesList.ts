@@ -2,10 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../lib/supabaseClient';
 
 interface LeagueListItem {
-  id: string;
-  name: string;
+  league_id: string;
+  league_name: string;
   join_code: string;
-  championship_id: string;
+  championship_name: string;
+  role: string;
   created_at: string;
 }
 
@@ -17,7 +18,7 @@ const fetchLeaguesList = async (): Promise<LeagueListItem[]> => {
 
   if (authError || !user) throw new Error('User not authenticated');
 
-  const { data, error } = await supabase.from('league_members').select('league_id').eq('user_id', user.id);
+  const { data, error } = await supabase.from('league_members').select('league_id, role').eq('user_id', user.id);
 
   if (error) throw error;
 
@@ -32,7 +33,24 @@ const fetchLeaguesList = async (): Promise<LeagueListItem[]> => {
     .order('created_at', { ascending: false });
 
   if (leaguesError) throw leaguesError;
-  return leagues || [];
+  const { data: championships, error: championshipsError } = await supabase.from('championships').select('id, name');
+
+  if (championshipsError) throw championshipsError;
+
+  const championshipMap = new Map<string, string>(
+    (championships || []).map((championship) => [championship.id, championship.name]),
+  );
+
+  const roleMap = new Map<string, string>(data.map((membership) => [membership.league_id, membership.role]));
+
+  return (leagues || []).map((league) => ({
+    league_id: league.id,
+    league_name: league.name,
+    join_code: league.join_code,
+    championship_name: championshipMap.get(league.championship_id) ?? 'Campeonato',
+    role: roleMap.get(league.id) ?? 'Participante',
+    created_at: league.created_at,
+  }));
 };
 
 export const useLeaguesList = () => {

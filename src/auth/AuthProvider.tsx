@@ -36,6 +36,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (loading || !session) {
+      return;
+    }
+
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const redirectPaths = ['/', '/signin', '/signup'];
+    if (!redirectPaths.includes(window.location.pathname)) {
+      return;
+    }
+
+    window.history.replaceState({}, '', '/dashboard');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  }, [loading, session]);
+
   const signOut = async () => {
     await supabase.auth.signOut();
   };

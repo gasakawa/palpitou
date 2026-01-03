@@ -19,6 +19,14 @@ export interface Match {
   venue_name: string | null;
 }
 
+export interface MatchPrediction {
+  user_id: string;
+  display_name: string;
+  home_pred: number;
+  away_pred: number;
+  updated_at: string | null;
+}
+
 export interface LeagueDetails {
   league_id: string;
   league_name: string;

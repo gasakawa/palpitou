@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Match } from '../lib/rpc/leagues';
-import { Clock, Check } from 'lucide-react';
+import { Clock } from 'lucide-react';
+import { MatchPredictionsPanel } from './MatchPredictionsPanel';
 
 interface MatchCardProps {
   match: Match;
   onSavePrediction: (homePred: number, awayPred: number) => Promise<void>;
   onPredictionUpdate?: (matchId: string, homePred: number, awayPred: number) => void;
+  leagueId: string;
 }
 
-export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, onPredictionUpdate }) => {
+export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, onPredictionUpdate, leagueId }) => {
   const [homePred, setHomePred] = useState<string>(match.my_home_pred?.toString() || '');
   const [awayPred, setAwayPred] = useState<string>(match.my_away_pred?.toString() || '');
   const [loading, setLoading] = useState(false);
@@ -225,6 +227,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
           }`}>
           {isMatchFinished ? 'Jogo finalizado' : isMatchStarted ? 'Jogo iniciado' : loading ? 'Salvando...' : 'Salvar'}
         </button>
+      </div>
+      <div className="mt-4">
+        <MatchPredictionsPanel leagueId={leagueId} matchId={match.match_id} startsAt={match.starts_at} />
       </div>
     </div>
   );

@@ -22,7 +22,11 @@ export default function Footer({ theme = 'light' }: FooterProps) {
             Política de Privacidade
           </a>
           <div className="hidden sm:block w-px h-4 bg-white/10" />
-          <a href="#" className={`${textColor} ${hoverColor} transition-colors`}>
+          <a
+            href="/regulamento"
+            target="_blank"
+            rel="no-opener no-referer"
+            className={`${textColor} ${hoverColor} transition-colors`}>
             Regulamento
           </a>
         </div>
