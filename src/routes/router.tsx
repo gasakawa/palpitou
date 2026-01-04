@@ -8,6 +8,8 @@ import { Dashboard } from '../components/Dashboard';
 import { LeagueDetail } from '../components/LeagueDetail';
 import { InvitePage } from '../components/InvitePage';
 import Regulamento from '../pages/Regulamento';
+import TermosDeUso from '../pages/TermosUso';
+import PoliticaDePrivacidade from '../pages/PoliticaPrivacidade';
 
 const SignInRoute: React.FC = () => {
   const navigate = useNavigate();
@@ -25,6 +27,8 @@ const routes: RouteObject[] = [
   { path: '/signin', element: <SignInRoute /> },
   { path: '/signup', element: <SignUpRoute /> },
   { path: '/invite/:code', element: <InvitePage /> },
+  { path: '/termos/', element: <TermosDeUso /> },
+  { path: '/politica-privacidade/', element: <PoliticaDePrivacidade /> },
   {
     element: <ProtectedRoute />,
     children: [

@@ -5,8 +5,10 @@ import Footer from '../components/Footer';
 const Regulamento: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-emerald-100">
-      <Header />
+      <Header minimal />
+
       <main className="pt-16">
+        {/* HERO */}
         <section className="relative overflow-hidden pt-16 pb-24 lg:pt-32 lg:pb-40">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10">
             <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" />
@@ -17,113 +19,153 @@ const Regulamento: React.FC = () => {
           </div>
 
           <div className="container mx-auto px-4 text-center max-w-4xl">
-            <div className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-600 mb-8 shadow-sm">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500 mr-2" />
-              Regulamento oficial
-            </div>
-
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]">
-              Regulamento do Palpitou
+              Regulamento Oficial
             </h1>
 
             <p className="text-lg md:text-xl text-slate-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-              O Palpitou é um bolão de futebol com pontuação transparente. Aqui você entende exatamente como os pontos
-              são calculados e como o ranking é formado.
+              O Palpitou é um bolão online de futebol com pontuação transparente. Aqui você entende como participar,
+              como funcionam os palpites e como cada ponto é calculado no ranking.
             </p>
           </div>
         </section>
 
+        {/* COMO PARTICIPAR */}
         <section className="py-20 bg-slate-50">
           <div className="container mx-auto px-4 max-w-5xl">
-            <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Objetivo do bolão</h2>
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-4">
+              <h2 className="text-2xl font-semibold text-slate-900">1. Como participar</h2>
+
               <p className="text-slate-600 leading-relaxed">
-                O Palpitou é um bolão online de futebol baseado em palpites por placar exato, com ranking e pontuação
-                totalmente transparentes. O objetivo é somar o maior número de pontos ao longo do campeonato dentro da
-                sua liga.
+                Para participar do Palpitou, você precisa criar uma conta e entrar em um bolão. Os bolões são privados e
+                vinculados a um campeonato.
+              </p>
+
+              <ul className="space-y-3 text-slate-600 text-sm leading-relaxed list-disc list-inside">
+                <li>Crie sua conta e acesse seu painel para participar.</li>
+                <li>Você pode criar um bolão privado em um campeonato e convidar amigos.</li>
+                <li>Você entra em um bolão por convite (código ou link, quando disponível).</li>
+                <li>
+                  Cada bolão pode ter regras sociais definidas pelo organizador (por exemplo: quem pode entrar), e o
+                  Palpitou não interfere nessas decisões, salvo em casos de violação deste regulamento.
+                </li>
+              </ul>
+
+              <div className="bg-slate-50 border border-slate-200 text-slate-700 rounded-2xl p-5 text-sm">
+                <strong className="block text-[13px] uppercase tracking-[0.2em] text-slate-500 mb-1">Observação</strong>
+                O Palpitou é uma plataforma recreativa de bolão. Participar implica aceitar este regulamento e os termos
+                aplicáveis.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* PALPITES */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 space-y-4">
+              <h2 className="text-2xl font-semibold text-slate-900">2. Como funcionam os palpites</h2>
+
+              <ul className="space-y-3 text-slate-600 text-sm leading-relaxed list-disc list-inside">
+                <li>Você informa o placar do jogo (ex.: 2 x 1).</li>
+                <li>Você pode criar ou alterar seu palpite até o horário de início do jogo.</li>
+                <li>Após o jogo começar, o palpite fica bloqueado (não pode ser alterado).</li>
+                <li>Após o jogo começar, os palpites passam a ficar visíveis para os demais membros do bolão.</li>
+              </ul>
+
+              <p className="text-slate-500 text-xs italic">
+                A pontuação considera o placar do tempo regulamentar (90 minutos). Prorrogação e pênaltis não entram no
+                cálculo (quando aplicável ao campeonato).
               </p>
             </div>
           </div>
         </section>
 
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4 max-w-5xl">
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100">
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Como funcionam os palpites</h2>
-              <ul className="space-y-3 text-slate-600 text-sm leading-relaxed list-disc list-inside">
-                <li>Você informa o placar exato do jogo (ex: 2 x 1).</li>
-                <li>Você pode criar ou alterar seu palpite até o horário de início do jogo.</li>
-                <li>
-                  Após o jogo começar, o palpite fica bloqueado e passa a ficar visível para os demais membros da liga.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
+        {/* PONTUAÇÃO */}
         <section className="py-20 bg-slate-50">
           <div className="container mx-auto px-4 max-w-5xl space-y-10">
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Pontuação</h2>
-              <p className="text-slate-600 leading-relaxed">
-                A pontuação de cada jogo segue uma hierarquia. Primeiro o sistema verifica se você acertou o placar
-                exato. Se não acertou, ele calcula pontos por resultado (vencedor/empate) e bônus por proximidade no
-                saldo de gols. Ao final, o total é multiplicado pelo número da rodada.
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">3. Pontuação</h2>
+
+              <p className="text-slate-600 leading-relaxed mb-4">
+                A pontuação do Palpitou é feita com base no seu palpite e no resultado oficial do jogo. A lógica segue
+                três etapas:
               </p>
+
+              <ol className="text-slate-600 leading-relaxed list-decimal list-inside space-y-2">
+                <li>
+                  Primeiro, verificamos se você acertou o <strong>placar exato</strong>.
+                </li>
+                <li>
+                  Se não acertou o placar exato, verificamos se você acertou o <strong>resultado</strong> (vencedor ou
+                  empate).
+                </li>
+                <li>
+                  Se o resultado estiver correto, aplicamos um <strong>bônus por proximidade no saldo de gols</strong>.
+                </li>
+              </ol>
+
+              <div className="mt-6 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl p-5 text-sm">
+                <strong className="block text-[13px] uppercase tracking-[0.2em] text-emerald-600 mb-1">
+                  Regra de ouro
+                </strong>
+                Se você acertar o <strong>placar exato</strong>, a pontuação do jogo é definida na hora e nenhuma outra
+                regra é aplicada (não soma pontos de resultado e não soma bônus).
+              </div>
             </div>
 
             <div className="bg-white p-8 rounded-3xl border border-slate-100 space-y-8">
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-slate-900">Regra 1 — Placar exato</h3>
+                <h3 className="text-lg font-semibold text-slate-900">3.1 Regra 1 — Placar exato</h3>
                 <p className="text-slate-600 leading-relaxed">
                   Se você acertar exatamente o placar final da partida, você recebe:
                 </p>
                 <ul className="list-disc list-inside text-slate-600 text-sm space-y-1">
-                  <li>50 pontos</li>
+                  <li>
+                    <strong>100 pontos</strong> (pontos de placar exato)
+                  </li>
                 </ul>
-                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl p-5 text-sm">
-                  <strong className="block text-[13px] uppercase tracking-[0.2em] text-emerald-600 mb-1">
-                    Importante
-                  </strong>
-                  Quando o placar exato é acertado, nenhum outro critério é aplicado. Ou seja, NÃO soma pontos de
-                  vencedor/empate e NÃO soma bônus por saldo. O placar exato sempre prevalece.
-                </div>
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-slate-900">
-                  Regra 2 — Resultado correto (vencedor ou empate)
-                </h3>
+                <h3 className="text-lg font-semibold text-slate-900">3.2 Regra 2 — Resultado correto</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Se você NÃO acertar o placar exato, o sistema verifica se você acertou o resultado do jogo:
+                  Se você não acertar o placar exato, o sistema verifica se você acertou o resultado do jogo:
                 </p>
                 <ul className="list-disc list-inside text-slate-600 text-sm space-y-1">
                   <li>vitória do mandante</li>
                   <li>vitória do visitante</li>
                   <li>empate</li>
                 </ul>
-                <p className="text-slate-600 leading-relaxed">Se acertar o resultado: 30 pontos</p>
+                <p className="text-slate-600 leading-relaxed">
+                  Se acertar o resultado: <strong>30 pontos</strong>.
+                </p>
                 <p className="text-slate-500 text-xs italic">
-                  Empate é tratado da mesma forma que vitória: ele conta como resultado correto apenas quando o placar
-                  exato não foi acertado.
+                  Se você errar o resultado (vencedor/empate), o jogo vale <strong>0</strong> — não existe bônus por
+                  proximidade quando o resultado está errado.
                 </p>
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-slate-900">
-                  Regra 3 — Bônus por proximidade no saldo de gols
-                </h3>
+                <h3 className="text-lg font-semibold text-slate-900">3.3 Regra 3 — Bônus por saldo de gols</h3>
                 <p className="text-slate-600 leading-relaxed">
                   Além dos pontos por resultado, existe um bônus que recompensa quem chegou perto do saldo de gols
                   (diferença entre gols do mandante e do visitante).
                 </p>
+
                 <ul className="list-disc list-inside text-slate-600 text-sm space-y-1">
-                  <li>Bônus máximo: 20 pontos</li>
                   <li>
-                    A cada 1 gol de diferença entre o saldo previsto e o saldo real, são descontados 10 pontos do bônus
+                    <strong>Bônus máximo:</strong> 20 pontos
                   </li>
-                  <li>O bônus mínimo é 0 (nunca fica negativo)</li>
+                  <li>
+                    <strong>Penalidade:</strong> a cada 1 gol de diferença entre o saldo previsto e o saldo real,
+                    desconta 10 pontos do bônus
+                  </li>
+                  <li>
+                    <strong>Bônus mínimo:</strong> 0 (nunca fica negativo)
+                  </li>
                 </ul>
+
                 <p className="text-slate-500 text-xs italic">
                   Saldo de gols = (gols do mandante) − (gols do visitante).
                 </p>
@@ -132,29 +174,38 @@ const Regulamento: React.FC = () => {
           </div>
         </section>
 
+        {/* CÁLCULO FINAL */}
         <section className="py-20 bg-white">
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
             <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100">
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Cálculo final</h2>
-              <pre className="bg-slate-900 text-emerald-200 p-5 rounded-3xl text-sm overflow-x-auto">
-                Pontos base = Pontos por resultado + Bônus por saldo de gols Pontuação final do jogo = Pontos base ×
-                Número da rodada
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">4. Cálculo final do jogo</h2>
+
+              <pre className="bg-slate-900 text-emerald-200 p-5 rounded-3xl text-sm overflow-x-auto whitespace-pre-wrap">
+                {`Se acertar placar exato:
+  Pontos base = 100
+
+Se NÃO acertar placar exato:
+  Pontos base = Pontos de resultado (30 ou 0) + Bônus de saldo (0 a 20)
+
+Pontuação final do jogo = Pontos base × Número da rodada`}
               </pre>
-              <p className="text-slate-600 leading-relaxed">
-                O multiplicador da rodada valoriza jogos mais avançados do campeonato.
+
+              <p className="text-slate-600 leading-relaxed mt-4">
+                O multiplicador da rodada valoriza jogos mais avançados do campeonato: rodadas posteriores valem mais
+                pontos no ranking.
               </p>
-              <p className="text-slate-600 leading-relaxed">Rodadas posteriores valem mais pontos no ranking.</p>
             </div>
           </div>
         </section>
 
+        {/* EXEMPLOS */}
         <section className="py-20 bg-slate-50">
           <div className="container mx-auto px-4 max-w-6xl space-y-8">
             <div>
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Exemplos de pontuação</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">5. Exemplos de pontuação</h2>
               <p className="text-slate-600 leading-relaxed">Abaixo alguns exemplos práticos usando as regras atuais:</p>
               <p className="text-slate-500 text-sm italic">
-                Configuração atual: Placar exato = 50, Resultado = 30, Bônus máximo = 20, Penalidade por gol no saldo =
+                Configuração atual: Placar exato = 100, Resultado = 30, Bônus máximo = 20, Penalidade por gol no saldo =
                 10.
               </p>
             </div>
@@ -166,9 +217,9 @@ const Regulamento: React.FC = () => {
                   lines: [
                     'Resultado real: 2 x 1',
                     'Seu palpite: 2 x 1',
-                    'Placar exato: 50 pontos',
+                    'Placar exato: 100 pontos',
                     'Outros critérios: não aplicam',
-                    'Rodada 3: 50 × 3 = 150 pontos',
+                    'Rodada 3: 100 × 3 = 300 pontos',
                   ],
                 },
                 {
@@ -177,7 +228,7 @@ const Regulamento: React.FC = () => {
                     'Resultado real: 2 x 1 (saldo +1)',
                     'Seu palpite: 3 x 2 (saldo +1)',
                     'Resultado correto: 30 pontos',
-                    'Bônus saldo exato: 20 pontos',
+                    'Bônus saldo de gols exato: 20 pontos',
                     'Pontos base: 30 + 20 = 50',
                     'Rodada 3: 50 × 3 = 150 pontos',
                   ],
@@ -208,10 +259,10 @@ const Regulamento: React.FC = () => {
                   lines: [
                     'Resultado real: 1 x 1 (empate, saldo 0)',
                     'Seu palpite: 2 x 2 (empate, saldo 0)',
-                    'Resultado correto (empate): 30 pontos',
+                    'Resultado correto: 30 pontos',
                     'Saldo exato: bônus 20 pontos',
                     'Pontos base: 50',
-                    'Pontuação final = 50 × número da rodada',
+                    'Rodada 4: 50 × 4 = 200 pontos',
                   ],
                 },
                 {
@@ -219,9 +270,9 @@ const Regulamento: React.FC = () => {
                   lines: [
                     'Resultado real: 1 x 1',
                     'Seu palpite: 1 x 1',
-                    'Placar exato: 50 pontos',
+                    'Placar exato: 100 pontos',
                     'Outros critérios: não aplicam',
-                    'Pontuação final = 50 × número da rodada',
+                    'Rodada 4: 100 × 4 = 400 pontos',
                   ],
                 },
               ].map((example) => (
@@ -240,39 +291,66 @@ const Regulamento: React.FC = () => {
           </div>
         </section>
 
+        {/* RANKING / DESEMPATE / TRANSPARÊNCIA */}
         <section className="py-20 bg-white">
           <div className="container mx-auto px-4 max-w-5xl space-y-6">
             <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100">
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Ranking e desempates</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">6. Ranking e critérios de desempate</h2>
               <p className="text-slate-600 leading-relaxed">
-                O ranking da liga é a soma dos pontos de todos os jogos finalizados.
+                O ranking do bolão é a soma das pontuações de todos os jogos finalizados.
               </p>
-              <ol className="list-decimal list-inside text-slate-600 text-sm space-y-2">
+              <ol className="list-decimal list-inside text-slate-600 text-sm space-y-2 mt-3">
                 <li>Maior número de acertos de placar exato</li>
                 <li>Maior número de acertos de resultado (vencedor/empate)</li>
-                <li>Ordem alfabética do nome do participante</li>
               </ol>
             </div>
 
             <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100">
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Transparência</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">7. Transparência</h2>
               <p className="text-slate-600 leading-relaxed">
-                O Palpitou mostra o detalhamento completo da pontuação por jogo (placar exato, resultado, bônus por
-                saldo, multiplicador da rodada e total). Não existem pontos ocultos.
+                O Palpitou mostra o detalhamento da pontuação por jogo (placar exato, resultado, bônus por saldo,
+                multiplicador da rodada e total). Não existem pontos ocultos.
               </p>
             </div>
+          </div>
+        </section>
 
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100">
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">Regras gerais e aceitação</h2>
+        {/* PREMIAÇÃO / RESPONSABILIDADES / DISPOSIÇÕES GERAIS */}
+        <section className="py-20 bg-slate-50">
+          <div className="container mx-auto px-4 max-w-5xl space-y-6">
+            <div className="bg-white p-8 rounded-3xl border border-slate-100">
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">8. Premiação</h2>
               <ul className="text-slate-600 text-sm leading-relaxed space-y-2 list-disc list-inside">
-                <li>As regras são iguais para todos os participantes.</li>
-                <li>No MVP, o Palpitou não gerencia apostas em dinheiro.</li>
-                <li>Ao participar de uma liga, o usuário declara que leu e aceita este regulamento.</li>
+                <li>
+                  O Palpitou não incentiva apostas e não oferece premiação material ou financeira por padrão. A
+                  finalidade da plataforma é recreativa.
+                </li>
+                <li>
+                  Se um bolão definir prêmios entre participantes (fora da plataforma), isso é de responsabilidade
+                  exclusiva dos organizadores e participantes.
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-8 rounded-3xl border border-slate-100">
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4">9. Disposições gerais</h2>
+              <ul className="text-slate-600 text-sm leading-relaxed space-y-2 list-disc list-inside">
+                <li>
+                  Problemas de conexão do usuário, falhas locais e instabilidades podem ocorrer e fogem ao controle da
+                  plataforma.
+                </li>
+                <li>
+                  Fraudes, tentativas de burlar regras ou qualquer abuso podem resultar em bloqueio de conta e/ou
+                  exclusão.
+                </li>
+                <li>O regulamento pode ser atualizado para melhorias e correções de produto.</li>
+                <li>Ao participar de um bolão, o usuário declara que leu e aceita este regulamento.</li>
               </ul>
             </div>
           </div>
         </section>
       </main>
+
       <Footer />
     </div>
   );

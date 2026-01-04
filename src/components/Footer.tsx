@@ -14,11 +14,19 @@ export default function Footer({ theme = 'light' }: FooterProps) {
     <footer className={`border-t ${borderColor} ${bgColor} py-4 bottom-0 fixed w-full`}>
       <div className="flex flex-col items-center text-sm">
         <div className="flex items-center gap-4 text-sm">
-          <a href="#" className={`${textColor} ${hoverColor} transition-colors`}>
+          <a
+            href="/termos/"
+            target="_blank"
+            rel="no-opener no-referer"
+            className={`${textColor} ${hoverColor} transition-colors`}>
             Termos de uso
           </a>
           <div className="hidden sm:block w-px h-4 bg-white/10" />
-          <a href="#" className={`${textColor} ${hoverColor} transition-colors`}>
+          <a
+            href="/politica-privacidade/"
+            target="_blank"
+            rel="no-opener no-referer"
+            className={`${textColor} ${hoverColor} transition-colors`}>
             Política de Privacidade
           </a>
           <div className="hidden sm:block w-px h-4 bg-white/10" />
@@ -30,7 +38,7 @@ export default function Footer({ theme = 'light' }: FooterProps) {
             Regulamento
           </a>
         </div>
-        <p className={`text-center text-xs ${textSecondary} mt-4`}>© 2026 Palpitou</p>
+        <p className={`text-center text-xs ${textSecondary} mt-4`}>AG7 DIGITAL BUSINESS - CNPJ: 50.446.882/0001-91</p>
       </div>
     </footer>
   );

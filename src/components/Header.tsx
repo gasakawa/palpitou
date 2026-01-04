@@ -5,7 +5,12 @@ import { Button } from './ui/Button';
 import { Menu, X } from 'lucide-react';
 import Logo from './Logo';
 
-export default function Header() {
+type HeaderProps = {
+  /** Shows only the logo without the navigation links or buttons */
+  minimal?: boolean;
+};
+
+export default function Header({ minimal = false }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -23,43 +28,48 @@ export default function Header() {
   };
   return (
     <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 p-4">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div
+        className={`container mx-auto px-4 h-16 flex items-center ${minimal ? 'justify-center' : 'justify-between'}`}>
         <Logo />
-        <nav className="hidden md:flex items-center space-x-8">
-          <button
-            type="button"
-            onClick={() => scrollToSection('como-funciona')}
-            className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">
-            Como funciona
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollToSection('faq')}
-            className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">
-            Dúvidas
-          </button>
-          <button
-            type="button"
-            onClick={handleSignInNavigation}
-            className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">
-            Entrar
-          </button>
-          <Button size="sm" onClick={handleSignInNavigation}>
-            Criar bolão
-          </Button>
-        </nav>
+        {!minimal && (
+          <>
+            <nav className="hidden md:flex items-center space-x-8">
+              <button
+                type="button"
+                onClick={() => scrollToSection('como-funciona')}
+                className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">
+                Como funciona
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection('faq')}
+                className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">
+                Dúvidas
+              </button>
+              <button
+                type="button"
+                onClick={handleSignInNavigation}
+                className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">
+                Entrar
+              </button>
+              <Button size="sm" onClick={handleSignInNavigation}>
+                Criar bolão
+              </Button>
+            </nav>
 
-        <button
-          type="button"
-          className="md:hidden p-2 text-slate-600"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-expanded={isMenuOpen}
-          aria-label="Alternar menu">
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+            <button
+              type="button"
+              className="md:hidden p-2 text-slate-600"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-expanded={isMenuOpen}
+              aria-label="Alternar menu">
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </>
+        )}
       </div>
 
-      {isMenuOpen && (
+      {!minimal && isMenuOpen && (
         <div className="md:hidden bg-white border-b border-slate-100 p-4 space-y-4 absolute w-full shadow-lg animate-in slide-in-from-top-5">
           <button
             type="button"
