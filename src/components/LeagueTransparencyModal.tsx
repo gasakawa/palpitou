@@ -25,13 +25,6 @@ const TransparencyGameCard: React.FC<TransparencyGameCardProps> = ({ game }) => 
         <div className="flex items-center gap-3 flex-1 min-w-0">
           {/* Home Team */}
           <div className="flex items-center gap-2 flex-1 min-w-0">
-            {game.home_team_image_url && (
-              <img
-                src={game.home_team_image_url}
-                alt={game.home_team}
-                className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-              />
-            )}
             <span className="text-sm font-medium text-white truncate">{game.home_team}</span>
           </div>
 
@@ -41,13 +34,6 @@ const TransparencyGameCard: React.FC<TransparencyGameCardProps> = ({ game }) => 
           {/* Away Team */}
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <span className="text-sm font-medium text-white truncate">{game.away_team}</span>
-            {game.away_team_image_url && (
-              <img
-                src={game.away_team_image_url}
-                alt={game.away_team}
-                className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-              />
-            )}
           </div>
         </div>
 

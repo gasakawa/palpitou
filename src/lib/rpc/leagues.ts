@@ -49,8 +49,8 @@ export interface MyPointsGameDetail {
   away_team: string;
   home_team_image_url?: string | null;
   away_team_image_url?: string | null;
-  my_home_pred: number;
-  my_away_pred: number;
+  home_pred: number;
+  away_pred: number;
   home_score: number | null;
   away_score: number | null;
   status: string;
@@ -195,6 +195,21 @@ export const fetchLeagueRanking = async (leagueId: string): Promise<LeagueRankin
     return data || [];
   } catch (err) {
     console.error('Error fetching league ranking:', err);
+    throw err;
+  }
+};
+
+export const fetchLeaguePoints = async (leagueId: string): Promise<boolean> => {
+  try {
+    const { count, error } = await supabase
+      .from('prediction_points')
+      .select('*', { count: 'exact', head: true })
+      .eq('league_id', leagueId);
+
+    if (error) throw error;
+    return count !== null && count > 0;
+  } catch (err) {
+    console.error('Error fetching league points count:', err);
     throw err;
   }
 };

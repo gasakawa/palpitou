@@ -46,7 +46,7 @@ const MyPointsMatchCard: React.FC<MyPointsMatchCardProps> = ({ game, index }) =>
             <p className="text-sm text-slate-400">
               Seu palpite:{' '}
               <span className="font-medium text-white">
-                {game.my_home_pred} - {game.my_away_pred}
+                {game.home_pred} - {game.away_pred}
               </span>
             </p>
             {hasResult ? (

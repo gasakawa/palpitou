@@ -1,6 +1,6 @@
 import React from 'react';
 import { RotateCcw } from 'lucide-react';
-import { useLeagueRanking } from '../hooks/useLeagueRanking';
+import { useLeaguePointsExistence, useLeagueRanking } from '../hooks/useLeagueRanking';
 import type { LeagueRankingItem } from '../types/types';
 
 interface RankingTableProps {
@@ -60,12 +60,14 @@ export const LeagueRankingSection: React.FC<LeagueRankingSectionProps> = ({ leag
     error: rankingError,
     refetch: refetchRanking,
   } = useLeagueRanking(leagueId);
+
+  const { data: hasPoints } = useLeaguePointsExistence(leagueId);
   const myStanding = ranking?.find((item) => item.is_me);
 
   return (
     <div className="space-y-4">
       {/* Your Position Card */}
-      {ranking && ranking.length > 0 && (
+      {hasPoints && ranking && ranking.length > 0 && (
         <div className="mb-6">
           {myStanding && (
             <div className="bg-gradient-to-r from-[#10B981]/20 to-[#10B981]/10 border border-[#10B981]/40 rounded-lg p-4 flex items-center justify-between">
@@ -112,11 +114,11 @@ export const LeagueRankingSection: React.FC<LeagueRankingSectionProps> = ({ leag
       )}
 
       {/* Ranking Table */}
-      {!rankingLoading && !rankingError && ranking && ranking.length > 0 && (
+      {hasPoints && !rankingLoading && !rankingError && ranking && ranking.length > 0 && (
         <RankingTable ranking={ranking} onPlayerClick={onPlayerClick} />
       )}
 
-      {!rankingLoading && !rankingError && (!ranking || ranking.length === 0) && (
+      {!hasPoints && (
         <div className="bg-white/5 border border-white/10 rounded-lg p-8 text-center">
           <p className="text-slate-400">Nenhum ranking disponível ainda</p>
         </div>
