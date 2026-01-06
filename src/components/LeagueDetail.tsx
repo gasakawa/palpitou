@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useLeagueDetails } from '../hooks/useLeagueDetails';
 import { LeagueDetailHeader } from './LeagueDetailHeader';
 import { LeagueMatchesSection } from './LeagueMatchesSection';
+import { LeagueMembersSection } from './LeagueMembersSection';
 import { LeagueRankingSection } from './LeagueRankingSection';
 import { LeagueMyPointsSection } from './LeagueMyPointsSection';
 import { LeagueTransparencyModal } from './LeagueTransparencyModal';
@@ -17,6 +18,10 @@ export const LeagueDetail: React.FC = () => {
 
   // React Query hook for league details
   const { data: leagueDetails, isLoading, error } = useLeagueDetails(leagueId || '');
+  console.log('🚀 ~ LeagueDetail ~ leagueDetails:', leagueDetails);
+
+  const normalizedRole = leagueDetails?.user_role?.toLowerCase() ?? '';
+  const isAdmin = normalizedRole === 'admin' || normalizedRole === 'owner';
 
   // Local UI state
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -104,6 +109,14 @@ export const LeagueDetail: React.FC = () => {
               Meus Pontos
               {activeTab === 'points' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#10B981]" />}
             </button>
+            <button
+              onClick={() => setActiveTab('members')}
+              className={`pb-4 px-2 font-medium transition-colors relative ${
+                activeTab === 'members' ? 'text-[#10B981]' : 'text-slate-400 hover:text-white'
+              }`}>
+              Membros
+              {activeTab === 'members' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#10B981]" />}
+            </button>
           </div>
 
           {/* Tab Content */}
@@ -115,6 +128,8 @@ export const LeagueDetail: React.FC = () => {
             {activeTab === 'points' && (
               <LeagueMyPointsSection leagueId={leagueId || ''} enabled={activeTab === 'points'} />
             )}
+
+            {activeTab === 'members' && <LeagueMembersSection leagueId={leagueId} isAdmin={isAdmin} />}
           </div>
 
           {/* Transparency Button */}

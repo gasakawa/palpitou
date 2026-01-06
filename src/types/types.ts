@@ -49,6 +49,11 @@ export interface LeagueRankingItem {
   is_me: boolean;
 }
 
+export interface LeagueMember {
+  user_id: string;
+  name: string;
+}
+
 export interface MyPointsBreakdown {
   type: string;
   points: number;
@@ -120,4 +125,4 @@ export interface MyPointsMatchCardProps {
   index: number;
 }
 
-export type TabType = 'ranking' | 'points';
+export type TabType = 'ranking' | 'points' | 'members';

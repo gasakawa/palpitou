@@ -8,7 +8,7 @@ interface LeagueDetailHeaderProps {
   onCopyCode: () => void;
 }
 
-const isInviteAllowed = (role: string) => role.toLowerCase().includes('admin');
+const isInviteAllowed = (role: string) => role?.toLowerCase().includes('admin');
 
 export const LeagueDetailHeader: React.FC<LeagueDetailHeaderProps> = ({ league, copiedCode, onCopyCode }) => {
   return (

@@ -1,4 +1,4 @@
-import { LeagueRankingItem, MatchPrediction } from '@/src/types/types';
+import { LeagueRankingItem, LeagueMember, MatchPrediction } from '@/src/types/types';
 import { supabase } from '../supabaseClient';
 
 export interface Match {
@@ -26,6 +26,7 @@ export interface LeagueDetails {
   championship_name: string;
   join_code: string;
   role: string;
+  user_role?: string;
   created_at: string;
   member_count?: number;
 }
@@ -210,6 +211,31 @@ export const fetchLeaguePoints = async (leagueId: string): Promise<boolean> => {
     return count !== null && count > 0;
   } catch (err) {
     console.error('Error fetching league points count:', err);
+    throw err;
+  }
+};
+
+export const fetchLeagueMembers = async (leagueId: string): Promise<LeagueMember[]> => {
+  try {
+    const { data, error } = await supabase.rpc('get_league_members_rpc', {
+      p_league_id: leagueId,
+    });
+
+    if (error) throw error;
+    return data || [];
+  } catch (err) {
+    console.error('Error fetching league members:', err);
+    throw err;
+  }
+};
+
+export const deleteLeagueMember = async (leagueId: string, userId: string): Promise<void> => {
+  try {
+    const { error } = await supabase.from('league_members').delete().match({ league_id: leagueId, user_id: userId });
+
+    if (error) throw error;
+  } catch (err) {
+    console.error('Error deleting league member:', err);
     throw err;
   }
 };
