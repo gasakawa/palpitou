@@ -225,7 +225,10 @@ export const fetchLeagueMembers = async (leagueId: string): Promise<LeagueMember
 
 export const deleteLeagueMember = async (leagueId: string, userId: string): Promise<void> => {
   try {
-    const { error } = await supabase.from('league_members').delete().match({ league_id: leagueId, user_id: userId });
+    const { error } = await supabase.rpc('delete_league_member', {
+      p_league_id: leagueId,
+      p_user_id: userId,
+    });
 
     if (error) throw error;
   } catch (err) {
