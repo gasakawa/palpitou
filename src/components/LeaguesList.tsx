@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useToast } from '../contexts/ToastContext';
 import { LeagueCard } from './LeagueCard';
 import { useLeaguesList } from '../hooks/useLeaguesList';
+import { useJoinLeague } from '../hooks/useJoinLeague';
 
 interface League {
   league_id: string;
@@ -16,6 +17,7 @@ interface League {
 export const LeaguesList: React.FC<{ onCreateNew: () => void }> = ({ onCreateNew }) => {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const { addToast } = useToast();
+  const { state, joinLeague, getPersistedCode } = useJoinLeague();
 
   // React Query hook
   const { data: leagues = [], isLoading: loading, error } = useLeaguesList();
@@ -25,6 +27,24 @@ export const LeaguesList: React.FC<{ onCreateNew: () => void }> = ({ onCreateNew
       addToast('Erro ao carregar bolões', 'error');
     }
   }, [error, addToast]);
+
+  React.useEffect(() => {
+    const persistedCode = getPersistedCode();
+    if (!persistedCode) return;
+    joinLeague(persistedCode);
+  }, [getPersistedCode, joinLeague]);
+
+  React.useEffect(() => {
+    if (state.success) {
+      addToast('Bem-vindo ao bolão!', 'success');
+    }
+  }, [state.success, addToast]);
+
+  React.useEffect(() => {
+    if (state.error) {
+      addToast(state.error, 'error');
+    }
+  }, [state.error, addToast]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -68,6 +88,11 @@ export const LeaguesList: React.FC<{ onCreateNew: () => void }> = ({ onCreateNew
 
   return (
     <div>
+      {state.loading && (
+        <div className="mb-4 rounded-lg bg-emerald-500/10 px-4 py-2 text-center text-emerald-600">
+          Entrando no bolão...
+        </div>
+      )}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Meus Bolões</h2>
         <button

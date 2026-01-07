@@ -18,7 +18,6 @@ export const LeagueDetail: React.FC = () => {
 
   // React Query hook for league details
   const { data: leagueDetails, isLoading, error } = useLeagueDetails(leagueId || '');
-  console.log('🚀 ~ LeagueDetail ~ leagueDetails:', leagueDetails);
 
   const normalizedRole = leagueDetails?.user_role?.toLowerCase() ?? '';
   const isAdmin = normalizedRole === 'admin' || normalizedRole === 'owner';

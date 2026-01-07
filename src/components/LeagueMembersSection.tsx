@@ -17,10 +17,10 @@ export const LeagueMembersSection: React.FC<LeagueMembersSectionProps> = ({ leag
 
   const { user } = useAuth();
   const members = membersData || [];
+  const canRemoveMembers = isAdmin;
 
   const handleDeleteMember = (memberId: string) => {
-    if (!isAdmin) return;
-    if (!leagueId) return;
+    if (!canRemoveMembers || !leagueId) return;
     setDeletingMemberId(memberId);
     deleteMemberMutation.mutate(memberId, {
       onSuccess: () => {
@@ -56,7 +56,7 @@ export const LeagueMembersSection: React.FC<LeagueMembersSectionProps> = ({ leag
               <div>
                 <p className="text-base font-medium text-white">{member.name}</p>
               </div>
-              {isAdmin && user?.id !== member.user_id && (
+              {canRemoveMembers && user?.id !== member.user_id && (
                 <button
                   type="button"
                   className="mt-2 inline-flex items-center justify-center rounded-full border border-white/20 bg-white/[0.05] px-4 py-1.5 text-xs font-medium text-rose-400 transition-colors hover:border-rose-300 disabled:border-white/10 disabled:text-slate-400"
@@ -68,12 +68,6 @@ export const LeagueMembersSection: React.FC<LeagueMembersSectionProps> = ({ leag
             </li>
           ))}
         </ul>
-      )}
-
-      {!isAdmin && members.length > 0 && (
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-3 text-xs text-slate-500">
-          Somente administradores podem remover membros.
-        </div>
       )}
     </div>
   );

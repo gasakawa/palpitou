@@ -5,11 +5,10 @@ interface JoinLeagueState {
   loading: boolean;
   error: string | null;
   success: boolean;
-  leagueName?: string;
-  leagueId?: string;
 }
 
-const STORAGE_KEY = 'palpitou_invite_code';
+export const INVITE_STORAGE_KEY = 'palpitou_invite_code';
+const STORAGE_KEY = INVITE_STORAGE_KEY;
 
 export const useJoinLeague = () => {
   const hasRunRef = useRef(false);
@@ -42,25 +41,12 @@ export const useJoinLeague = () => {
       setState({ loading: true, error: null, success: false });
 
       try {
-        // Call the RPC function to join league by code
-        const data = await joinLeagueByCode(code);
+        await joinLeagueByCode(code);
 
-        if (!data || data.length === 0) {
-          setState({
-            loading: false,
-            error: 'Código inválido ou expirado.',
-            success: false,
-          });
-          return;
-        }
-
-        // Success
         setState({
           loading: false,
           error: null,
           success: true,
-          leagueName: data[0].league_name,
-          leagueId: data[0].league_id,
         });
 
         clearPersistedCode();
@@ -68,15 +54,12 @@ export const useJoinLeague = () => {
         console.error('Error joining league:', err);
         const errorMessage = err instanceof Error ? err.message : 'Ocorreu um erro inesperado. Tente novamente.';
 
-        // Check if it's an already member error
+        // Treat already-member responses as success so the UI can show feedback
         if (errorMessage.toLowerCase().includes('already') || errorMessage.toLowerCase().includes('member')) {
-          // Extract league info if available
           setState({
             loading: false,
             error: null,
             success: true,
-            leagueName: 'Liga',
-            leagueId: undefined,
           });
         } else {
           setState({

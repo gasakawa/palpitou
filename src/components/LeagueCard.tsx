@@ -34,9 +34,6 @@ export const LeagueCard: React.FC<LeagueCardProps> = ({
       <h3 className="text-emerald-400 font-semibold mb-2">{league_name}</h3>
       <div className="space-y-2 text-sm text-slate-400">
         <p>{championship_name}</p>
-        <p>
-          <span className="text-white/60">Papel:</span> {role}
-        </p>
         <div className="flex items-center gap-2">
           <span className="text-white/60">Convite:</span>
           <code className="bg-white/5 px-2 py-1 rounded text-xs font-mono">{join_code}</code>
