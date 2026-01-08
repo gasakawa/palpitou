@@ -70,7 +70,7 @@ const Home: React.FC = () => {
         <section id="como-funciona" className="py-20 bg-slate-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Como funciona o Palpitando</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Como funciona o Palpitou</h2>
               <p className="text-slate-600 max-w-xl mx-auto">
                 Simplicidade é nosso lema. Em menos de 2 minutos seu grupo está pronto para começar a palpitar.
               </p>
