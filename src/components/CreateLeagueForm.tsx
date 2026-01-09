@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useToast } from '../contexts/ToastContext';
 import { Loader2 } from 'lucide-react';
 import { useChampionships } from '../hooks/useChampionships';
+import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabaseClient';
 
 interface CreateLeagueFormProps {
@@ -12,8 +13,10 @@ interface CreateLeagueFormProps {
 export const CreateLeagueForm: React.FC<CreateLeagueFormProps> = ({ onSuccess, onCancel }) => {
   const [leagueName, setLeagueName] = useState('');
   const [championshipId, setChampionshipId] = useState('');
+  const [rules, setRules] = useState('');
   const [loading, setLoading] = useState(false);
   const { addToast } = useToast();
+  const queryClient = useQueryClient();
 
   // React Query hook
   const { data: championships = [], isLoading: loadingChampionships, error } = useChampionships();
@@ -51,11 +54,13 @@ export const CreateLeagueForm: React.FC<CreateLeagueFormProps> = ({ onSuccess, o
       const { data, error } = await supabase.rpc('create_league_rpc', {
         p_championship_id: championshipId,
         p_name: leagueName.trim(),
+        p_rules: rules.trim() || null,
       });
 
       if (error) throw error;
 
       addToast('Bolão criado com sucesso!', 'success');
+      queryClient.invalidateQueries({ queryKey: ['leagues'] });
       onSuccess();
     } catch (err) {
       addToast('Erro ao criar bolão', 'error');
@@ -99,6 +104,17 @@ export const CreateLeagueForm: React.FC<CreateLeagueFormProps> = ({ onSuccess, o
             placeholder="Ex: Bolão com os amigos"
             disabled={loading}
             className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-white/80 mb-2">Descrição</label>
+          <textarea
+            value={rules}
+            onChange={(e) => setRules(e.target.value)}
+            disabled={loading}
+            rows={4}
+            className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed resize-none"
           />
         </div>
 

@@ -29,6 +29,7 @@ export interface LeagueDetails {
   user_role?: string;
   created_at: string;
   member_count?: number;
+  rules?: string;
 }
 
 export interface MyPointsBreakdown {

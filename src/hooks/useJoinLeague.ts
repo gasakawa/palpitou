@@ -64,7 +64,7 @@ export const useJoinLeague = () => {
         } else {
           setState({
             loading: false,
-            error: errorMessage || 'Erro ao entrar na liga. Código inválido?',
+            error: errorMessage || 'Erro ao entrar no bolão. Código inválido?',
             success: false,
           });
         }
