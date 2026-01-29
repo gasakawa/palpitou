@@ -171,12 +171,16 @@ export const LeagueTransparencyModal: React.FC<LeagueTransparencyModalProps> = (
     return { players: playersList, groupedByUser: grouped };
   }, [playersPointsDetails]);
 
-  // Initialize selected user on modal open
+  // Initialize selected user on modal open or when initialUserId changes
   useEffect(() => {
-    if (isOpen && (!selectedUserId || !players.find((p) => p.user_id === selectedUserId))) {
-      setSelectedUserId(initialUserId || players[0]?.user_id || null);
+    if (isOpen) {
+      if (initialUserId && players.find((p) => p.user_id === initialUserId)) {
+        setSelectedUserId(initialUserId);
+      } else if (!selectedUserId || !players.find((p) => p.user_id === selectedUserId)) {
+        setSelectedUserId(players[0]?.user_id || null);
+      }
     }
-  }, [isOpen, players, selectedUserId, initialUserId]);
+  }, [isOpen, players, initialUserId]);
 
   // Reset games display limit when selected user changes
   useEffect(() => {
@@ -241,6 +245,14 @@ export const LeagueTransparencyModal: React.FC<LeagueTransparencyModalProps> = (
             <div className="space-y-4">
               {/* Player Select */}
               <div>
+                <style>
+                  {`
+                    select option {
+                      background-color: #1a1a1a;
+                      color: white;
+                    }
+                  `}
+                </style>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Selecionar Jogador</label>
                 <select
                   value={selectedUserId || ''}
