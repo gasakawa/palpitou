@@ -70,7 +70,7 @@ export const MatchPredictionsPanel: React.FC<MatchPredictionsPanelProps> = ({ le
           )}
 
           {!isLoading && !error && visiblePredictions.length > 0 && (
-            <div className="space-y-3">
+            <div className="space-y-3 max-h-96 overflow-y-auto pr-2 pb-2">
               {visiblePredictions.map((prediction) => (
                 <div key={prediction.user_id} className="flex items-center justify-between gap-3">
                   <div className="space-y-1">

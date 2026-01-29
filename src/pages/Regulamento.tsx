@@ -94,15 +94,18 @@ const Regulamento: React.FC = () => {
 
               <ol className="text-slate-600 leading-relaxed list-decimal list-inside space-y-2">
                 <li>
-                  Primeiro, verificamos se você acertou o <strong>placar exato</strong>.
+                  O sistema primeiro verifica se você acertou o placar exato; caso positivo, a pontuação é definida e
+                  aplicada.
                 </li>
                 <li>
-                  Se não acertou o placar exato, verificamos se você acertou o <strong>resultado</strong> (vencedor ou
-                  empate).
+                  Se o placar exato não foi acertado, ele avalia se você acertou o resultado do jogo (vitória do
+                  mandante, vitória do visitante ou empate) para atribuir os pontos de resultado.
                 </li>
                 <li>
-                  Se o resultado estiver correto, aplicamos um <strong>bônus por proximidade no saldo de gols</strong>.
+                  Independente de acertar ou não o resultado, o sistema calcula um bônus por proximidade no saldo de
+                  gols (diferença entre gols do mandante e do visitante).
                 </li>
+                <li>Ao final, quando houver pontos, o total obtido no jogo é multiplicado pelo número da rodada.</li>
               </ol>
 
               <div className="mt-6 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl p-5 text-sm">
@@ -138,11 +141,11 @@ const Regulamento: React.FC = () => {
                   <li>empate</li>
                 </ul>
                 <p className="text-slate-600 leading-relaxed">
-                  Se acertar o resultado: <strong>30 pontos</strong>.
+                  Se acertar o resultado (vencedor ou empate): <strong>30 pontos</strong>.
                 </p>
                 <p className="text-slate-500 text-xs italic">
-                  Se você errar o resultado (vencedor/empate), o jogo vale <strong>0</strong> — não existe bônus por
-                  proximidade quando o resultado está errado.
+                  Se você errar o resultado, você não recebe os pontos de resultado (30). Porém, ainda pode receber
+                  pontos pelo bônus de proximidade no saldo de gols, conforme a Regra 3.
                 </p>
               </div>
 
@@ -169,6 +172,11 @@ const Regulamento: React.FC = () => {
                 <p className="text-slate-500 text-xs italic">
                   Saldo de gols = (gols do mandante) − (gols do visitante).
                 </p>
+
+                <p className="text-slate-600 leading-relaxed">
+                  O bônus é calculado sempre que você não acerta o placar exato — mesmo que o resultado
+                  (vencedor/empate) esteja incorreto.
+                </p>
               </div>
             </div>
           </div>
@@ -185,7 +193,7 @@ const Regulamento: React.FC = () => {
   Pontos base = 100
 
 Se NÃO acertar placar exato:
-  Pontos base = Pontos de resultado (30 ou 0) + Bônus de saldo (0 a 20)
+  Pontos base = Pontos de resultado (0 ou 30) + Bônus de saldo (0 a 20)
 
 Pontuação final do jogo = Pontos base × Número da rodada`}
               </pre>
@@ -245,13 +253,14 @@ Pontuação final do jogo = Pontos base × Número da rodada`}
                   ],
                 },
                 {
-                  title: 'Exemplo 4 — Errou o vencedor',
+                  title: 'Exemplo 4 — Errou o vencedor, mas ganhou bônus de saldo',
                   lines: [
-                    'Resultado real: 2 x 1',
-                    'Seu palpite: 1 x 2',
-                    'Resultado incorreto: 0 pontos',
-                    'Bônus: 0 pontos',
-                    'Total: 0',
+                    'Resultado real: 2 x 2 (saldo 0)',
+                    'Seu palpite: 1 x 2 (saldo -1)',
+                    'Resultado incorreto: 0 pontos de resultado',
+                    'Erro de 1 no saldo: bônus 20 − 10 = 10 pontos',
+                    'Pontos base: 10',
+                    'Rodada 1: 10 × 1 = 10 pontos',
                   ],
                 },
                 {
