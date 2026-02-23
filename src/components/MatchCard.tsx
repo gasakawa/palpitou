@@ -17,13 +17,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
   const [error, setError] = useState('');
   const [countdown, setCountdown] = useState('');
 
-  const isMatchStarted = new Date(match.starts_at) <= new Date() || match.status === 'finished';
+  const isMatchStarted = (match.starts_at && new Date(match.starts_at) <= new Date()) || match.status === 'finished';
   const isMatchFinished = match.status === 'finished';
   const hasRealScore = isMatchFinished && match.home_score !== null && match.away_score !== null;
 
   // Countdown timer
   useEffect(() => {
-    if (isMatchStarted) return;
+    if (isMatchStarted || !match.starts_at) return;
 
     const updateCountdown = () => {
       const now = new Date();
@@ -165,7 +165,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
         </div>
 
         {/* Match Start DateTime */}
-        <div className="text-xs text-center text-slate-400 mb-2">{formatDate(match.starts_at)}</div>
+        <div className="text-xs text-center text-slate-400 mb-2">
+          {match.starts_at ? formatDate(match.starts_at) : 'Sem data definida'}
+        </div>
 
         {/* Saved Prediction */}
         {match.my_home_pred !== null && match.my_away_pred !== null && (
@@ -190,7 +192,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match, onSavePrediction, o
       </div>
 
       {/* Match Time and Countdown */}
-      {!isMatchStarted && countdown && (
+      {!isMatchStarted && match.starts_at && countdown && (
         <div className="text-xs mb-3">
           <div className="flex items-center gap-1 text-emerald-400">
             <Clock className="w-3 h-3" />
